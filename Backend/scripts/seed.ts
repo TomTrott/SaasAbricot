@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import 'dotenv/config'
 import prisma from "../src/lib/prisma";
 
 // Types pour les données de test
