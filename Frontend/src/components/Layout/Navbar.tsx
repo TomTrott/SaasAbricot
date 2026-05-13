@@ -3,7 +3,7 @@ import logoAbricot from "../../assets/logoabricot.png";
 
 export default function Navbar() {
   return (
-    <nav className="w-full h-[88px] bg-white flex items-center justify-between px-10 border-b border-[#ececec]">
+    <nav className="w-full h-[88px] bg-white flex items-center justify-between px-30 border-b border-[#ececec]">
       {/* Logo */}
       <div className="flex items-center">
         <img
@@ -14,16 +14,16 @@ export default function Navbar() {
       </div>
 
       {/* Menu centre */}
-      <div className="flex items-center gap-10">
+      <div className="flex items-center gap-15">
         {/* Active */}
-        <button className="h-[78px] px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-4 text-[28px] font-medium">
+        <button className="h-[66px] px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-4 text-[18px] font-sm">
           <LayoutDashboard size={30} />
           <span>Tableau de bord</span>
         </button>
 
         {/* Item */}
-        <button className="flex items-center gap-4 text-[#d45d00] text-[28px] font-medium">
-          <Folder size={30} />
+        <button className="flex items-center gap-4 text-[#d45d00] text-[24px] font-medium">
+          <Folder size={26} />
           <span>Projets</span>
         </button>
       </div>
