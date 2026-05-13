@@ -1,13 +1,12 @@
 import { LayoutDashboard, Folder, Menu, } from "lucide-react";
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import logoAbricot from "../../assets/logoabricot.png";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<
-    "dashboard" | "projects"
-  >("dashboard");
+  const location = useLocation();
 
   return (
     <nav className="w-full bg-white border-b border-[#ececec] sticky top-0 z-50">
@@ -24,48 +23,44 @@ export default function Navbar() {
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-6 xl:gap-10">
           {/* dashboard button */}
-          <button
-            onClick={() =>
-              setActiveTab("dashboard")
-            }
+          <Link
+            to="/dashboard"
             className={`transition-all duration-300 ${
-              activeTab === "dashboard"
-                ? "h-[62px] px-7 xl:px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-3 text-[16px] xl:text-[18px] font-medium hover:scale-[1.02] hover:shadow-lg"
-                : "flex items-center gap-3 text-[#d45d00] text-[18px] xl:text-[22px] font-medium hover:opacity-80"
+              location.pathname === "/dashboard"
+                ? "h-[62px] px-7 xl:px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-3 text-[16px] xl:text-[18px] font-sm hover:scale-[1.02] hover:shadow-lg"
+                : "flex items-center gap-3 text-[#d45d00] text-[16px] xl:text-[22px] font-sm hover:opacity-80"
             }`}
           >
             <LayoutDashboard
               size={
-                activeTab === "dashboard"
+                location.pathname === "/dashboard"
                   ? 24
                   : 26
               }
             />
 
             <span>Tableau de bord</span>
-          </button>
+          </Link>
 
           {/* projets button */}
-          <button
-            onClick={() =>
-              setActiveTab("projects")
-            }
+          <Link
+            to="/projects"
             className={`transition-all duration-300 ${
-              activeTab === "projects"
-                ? "h-[62px] px-7 xl:px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-3 text-[16px] xl:text-[18px] font-medium hover:scale-[1.02] hover:shadow-lg"
-                : "flex items-center gap-3 text-[#d45d00] text-[18px] xl:text-[22px] font-medium hover:opacity-80"
+              location.pathname === "/projects"
+                ? "h-[62px] px-7 xl:px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-3 text-[16px] xl:text-[18px] font-sm hover:scale-[1.02] hover:shadow-lg"
+                : "flex items-center gap-3 text-[#d45d00] text-[16px] xl:text-[22px] font-sm hover:opacity-80"
             }`}
           >
             <Folder
               size={
-                activeTab === "projects"
+                location.pathname === "/projects"
                   ? 24
                   : 26
               }
             />
 
             <span>Projets</span>
-          </button>
+          </Link>
         </div>
 
         {/* Right */}
@@ -89,34 +84,30 @@ export default function Navbar() {
       {open && (
         <div className="lg:hidden border-t border-[#ececec] bg-white px-4 py-5 flex flex-col gap-4">
           {/* dashboard mobile */}
-          <button
-            onClick={() =>
-              setActiveTab("dashboard")
-            }
+          <Link
+            to="/dashboard"
             className={`transition-all duration-300 ${
-              activeTab === "dashboard"
+              location.pathname === "/dashboard"
                 ? "w-full h-[56px] rounded-[14px] bg-[#050505] text-white flex items-center gap-3 px-5 text-[16px] font-medium"
                 : "w-full h-[56px] rounded-[14px] border border-[#ececec] text-[#d45d00] flex items-center gap-3 px-5 text-[16px] font-medium"
             }`}
           >
             <LayoutDashboard size={22} />
             <span>Tableau de bord</span>
-          </button>
+          </Link>
 
           {/* projets mobile */}
-          <button
-            onClick={() =>
-              setActiveTab("projects")
-            }
+          <Link
+            to="/projects"
             className={`transition-all duration-300 ${
-              activeTab === "projects"
+              location.pathname === "/projects"
                 ? "w-full h-[56px] rounded-[14px] bg-[#050505] text-white flex items-center gap-3 px-5 text-[16px] font-medium"
                 : "w-full h-[56px] rounded-[14px] border border-[#ececec] text-[#d45d00] flex items-center gap-3 px-5 text-[16px] font-medium"
             }`}
           >
             <Folder size={22} />
             <span>Projets</span>
-          </button>
+          </Link>
         </div>
       )}
     </nav>

@@ -1,3 +1,4 @@
+//mock data for projects and tasks
 export const tasks = [
   {
     id: "1",
@@ -132,5 +133,222 @@ export const tasks = [
     creatorId: "user-1",
     project: "Abricot",
     comments: 2,
+  },
+];
+
+// Mock data for projects and members
+
+export type ProjectMemberRole =
+  | "OWNER"
+  | "ADMIN"
+  | "CONTRIBUTOR";
+
+export type ProjectMember = {
+  id: string;
+  role: ProjectMemberRole;
+  joinedAt: string;
+  user: {
+    id: string;
+    firstname: string;
+    lastname: string;
+    avatar: string;
+  };
+};
+
+export type Project = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  ownerId: string;
+  tasksCompleted: number;
+  totalTasks: number;
+  members: ProjectMember[];
+};
+
+export const projects: Project[] = [
+  {
+    id: "project_1",
+    name: "API REST V2",
+    description: "Développement de la nouvelle version de l'API REST avec authentification JWT",
+    createdAt: "2026-05-01",
+    updatedAt: "2026-05-10",
+    ownerId: "user_1",
+    tasksCompleted: 2,
+    totalTasks: 8,
+    members: [
+      {
+        id: "member_1",
+        role: "OWNER",
+        joinedAt: "2026-05-01",
+        user: {
+          id: "user_1",
+          firstname: "Alice",
+          lastname: "Dupont",
+          avatar: "AD",
+        },
+      },
+      {
+        id: "member_2",
+        role: "CONTRIBUTOR",
+        joinedAt: "2026-05-02",
+        user: {
+          id: "user_2",
+          firstname: "Bastien",
+          lastname: "Colin",
+          avatar: "BC",
+        },
+      },
+      {
+        id: "member_3",
+        role: "CONTRIBUTOR",
+        joinedAt: "2026-05-03",
+        user: {
+          id: "user_3",
+          firstname: "Clara",
+          lastname: "Vidal",
+          avatar: "CV",
+        },
+      },
+    ],
+  },
+  {
+    id: "project_2",
+    name: "Dashboard Analytics",
+    description:
+      "Création d'un tableau de bord analytique avec graphiques temps réel",
+    createdAt: "2026-05-03",
+    updatedAt: "2026-05-12",
+    ownerId: "user_1",
+    tasksCompleted: 5,
+    totalTasks: 10,
+    members: [
+      {
+        id: "member_4",
+        role: "OWNER",
+        joinedAt: "2026-05-03",
+        user: {
+          id: "user_1",
+          firstname: "Alice",
+          lastname: "Dupont",
+          avatar: "AD",
+        },
+      },
+      {
+        id: "member_5",
+        role: "ADMIN",
+        joinedAt: "2026-05-05",
+        user: {
+          id: "user_4",
+          firstname: "David",
+          lastname: "Morel",
+          avatar: "DM",
+        },
+      },
+      {
+        id: "member_6",
+        role: "CONTRIBUTOR",
+        joinedAt: "2026-05-06",
+        user: {
+          id: "user_5",
+          firstname: "Emma",
+          lastname: "Robert",
+          avatar: "ER",
+        },
+      },
+    ],
+  },
+  {
+    id: "project_3",
+    name: "Application Mobile",
+    description:
+      "Développement de l'application mobile iOS et Android",
+    createdAt: "2026-05-06",
+    updatedAt: "2026-05-14",
+    ownerId: "user_2",
+    tasksCompleted: 7,
+    totalTasks: 12,
+    members: [
+      {
+        id: "member_7",
+        role: "OWNER",
+        joinedAt: "2026-05-06",
+        user: {
+          id: "user_2",
+          firstname: "Bastien",
+          lastname: "Colin",
+          avatar: "BC",
+        },
+      },
+      {
+        id: "member_8",
+        role: "CONTRIBUTOR",
+        joinedAt: "2026-05-07",
+        user: {
+          id: "user_1",
+          firstname: "Alice",
+          lastname: "Dupont",
+          avatar: "AD",
+        },
+      },
+      {
+        id: "member_9",
+        role: "CONTRIBUTOR",
+        joinedAt: "2026-05-08",
+        user: {
+          id: "user_6",
+          firstname: "Lucas",
+          lastname: "Martin",
+          avatar: "LM",
+        },
+      },
+    ],
+  },
+  {
+    id: "project_4",
+    name: "Refonte Frontend",
+    description:
+      "Migration complète du frontend vers React et TypeScript",
+    createdAt: "2026-05-08",
+    updatedAt: "2026-05-14",
+    ownerId: "user_3",
+    tasksCompleted: 9,
+    totalTasks: 14,
+    members: [
+      {
+        id: "member_10",
+        role: "OWNER",
+        joinedAt: "2026-05-08",
+        user: {
+          id: "user_3",
+          firstname: "Clara",
+          lastname: "Vidal",
+          avatar: "CV",
+        },
+      },
+      {
+        id: "member_11",
+        role: "ADMIN",
+        joinedAt: "2026-05-09",
+        user: {
+          id: "user_1",
+          firstname: "Alice",
+          lastname: "Dupont",
+          avatar: "AD",
+        },
+      },
+      {
+        id: "member_12",
+        role: "CONTRIBUTOR",
+        joinedAt: "2026-05-10",
+        user: {
+          id: "user_5",
+          firstname: "Emma",
+          lastname: "Robert",
+          avatar: "ER",
+        },
+      },
+    ],
   },
 ];

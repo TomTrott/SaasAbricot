@@ -1,14 +1,10 @@
 import ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-
+import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 import "./index.css";
-
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +22,11 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <Dashboard />,
+  },
+
+   {
+    path: "/projects",
+    element: <Projects />,
   },
 ]);
 
