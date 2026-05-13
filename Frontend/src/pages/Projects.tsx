@@ -20,7 +20,7 @@ export default function Projects() {
             </p>
           </div>
 
-          <button className="w-full sm:w-fit whitespace-nowrap bg-[#1f1f23] text-white h-[54px] px-7 rounded-[14px] text-[16px] sm:text-[16px] lg:text-[20px] font-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:bg-black active:scale-[0.98]">
+          <button className="w-full sm:w-fit whitespace-nowrap bg-[#1f1f23] text-white h-[54px] px-7 rounded-[14px] text-[16px] sm:text-[18px] lg:text-[20px] font-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:bg-black active:scale-[0.98]">
             + Créer un projet
           </button>
         </div>
