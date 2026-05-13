@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-
 import bannerLogin from "../assets/images/bannierelogin.png";
 import logoAbricot from "../assets/logoabricot.png";
 
@@ -31,7 +30,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex bg-[#f3f3f3] overflow-hidden">
-      {/* Partie gauche */}
+      {/* Left side */}
       <div className="w-full lg:w-[39%] bg-[#f3f3f3] relative flex items-center justify-center px-8">
         {/* Logo */}
         <div className="absolute top-32 left-1/2 -translate-x-1/2">
@@ -42,7 +41,7 @@ export default function Login() {
           />
         </div>
 
-        {/* Contenu centré */}
+        {/* center content */}
         <div className="w-full max-w-[360px]">
           <h1 className="text-[58px] font-bold text-[#d45d00] mb-14 leading-none text-center">
             Connexion
@@ -84,7 +83,7 @@ export default function Login() {
             Se connecter
           </button>
 
-          {/* Mot de passe oublié */}
+          {/* forgot password */}
           <div className="mt-6 text-center">
             <button
               type="button"
@@ -111,7 +110,7 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Partie droite */}
+      {/* Right side */}
       <div className="hidden lg:block lg:w-[61%] h-screen">
         <img
           src={bannerLogin}

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-
 import bannerRegister from "../assets/images/banniereregister.png";
 import logoAbricot from "../assets/logoabricot.png";
 
@@ -27,7 +26,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex bg-[#f3f3f3] overflow-hidden">
-      {/* Partie gauche */}
+      {/* Left side */}
       <div className="w-full lg:w-[39%] bg-[#f3f3f3] relative flex items-center justify-center px-8">
          {/* Logo */}
         <div className="absolute top-32 left-1/2 -translate-x-1/2">
@@ -72,7 +71,7 @@ export default function Register() {
             />
           </div>
 
-          {/* Bouton */}
+          {/* Button */}
           <button
             onClick={handleRegister}
             className="w-full h-[58px] bg-[#1f1f23] hover:bg-black transition-all duration-200 rounded-[12px] text-white text-[24px] font-sm"
@@ -97,7 +96,7 @@ export default function Register() {
         </div>
       </div>
 
-      {/* Partie droite */}
+      {/* Right side */}
       <div className="hidden lg:block lg:w-[61%] h-screen">
         <img
           src={bannerRegister}
