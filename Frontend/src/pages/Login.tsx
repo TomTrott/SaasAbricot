@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
+import bannerLogin from "../assets/images/bannierelogin.png";
+import logoAbricot from "../assets/logoabricot.png";
+
 export default function Login() {
   const navigate = useNavigate();
 
@@ -27,32 +30,94 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-sm flex flex-col gap-4">
-        <h1 className="text-3xl font-bold">
-          Connexion
-        </h1>
+    <div className="min-h-screen flex bg-[#f3f3f3] overflow-hidden">
+      {/* Partie gauche */}
+      <div className="w-full lg:w-[39%] bg-[#f3f3f3] relative flex items-center justify-center px-8">
+        {/* Logo */}
+        <div className="absolute top-32 left-1/2 -translate-x-1/2">
+          <img
+            src={logoAbricot}
+            alt="Abricot"
+            className="w-[320px]"
+          />
+        </div>
 
-        <input
-          className="border p-3 rounded"
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
+        {/* Contenu centré */}
+        <div className="w-full max-w-[360px]">
+          <h1 className="text-[58px] font-bold text-[#d45d00] mb-14 leading-none text-center">
+            Connexion
+          </h1>
+
+          {/* Email */}
+          <div className="mb-8">
+            <label className="block text-[18px] text-[#1d1d1d] mb-3">
+              Email
+            </label>
+
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] outline-none focus:border-[#d45d00]"
+            />
+          </div>
+
+          {/* Password */}
+          <div className="mb-8">
+            <label className="block text-[18px] text-[#1d1d1d] mb-3">
+              Mot de passe
+            </label>
+
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] outline-none focus:border-[#d45d00]"
+            />
+          </div>
+
+          {/* Bouton */}
+          <button
+            onClick={handleLogin}
+            className="w-full h-[58px] bg-[#1f1f23] hover:bg-black transition-all duration-200 rounded-[12px] text-white text-[24px] font-sm"
+          >
+            Se connecter
+          </button>
+
+          {/* Mot de passe oublié */}
+          <div className="mt-6 text-center">
+            <button
+              type="button"
+              className="text-[#d45d00] underline text-[18px]"
+            >
+              Mot de passe oublié?
+            </button>
+          </div>
+
+          {/* Footer */}
+          <div className="flex items-center justify-center gap-2 text-[20px] mt-32 whitespace-nowrap">
+            <span className="text-[#1d1d1d]">
+              Pas encore de compte ?
+            </span>
+
+            <button
+              type="button"
+              onClick={() => navigate("/register")}
+              className="text-[#ff6b00] underline"
+            >
+              Créer un compte
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Partie droite */}
+      <div className="hidden lg:block lg:w-[61%] h-screen">
+        <img
+          src={bannerLogin}
+          alt="Bannière connexion"
+          className="w-full h-full object-cover"
         />
-
-        <input
-          className="border p-3 rounded"
-          type="password"
-          placeholder="Mot de passe"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <button
-          className="bg-black text-white p-3 rounded"
-          onClick={handleLogin}
-        >
-          Se connecter
-        </button>
       </div>
     </div>
   );
