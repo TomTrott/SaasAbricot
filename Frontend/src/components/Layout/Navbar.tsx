@@ -1,62 +1,58 @@
+"use client";
 import { LayoutDashboard, Folder, Menu, } from "lucide-react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import logoAbricot from "../../assets/logoabricot.png";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  const location = useLocation();
+  const pathname = usePathname();
 
   return (
     <nav className="w-full bg-white border-b border-[#ececec] sticky top-0 z-50">
       <div className="max-w-[1700px] mx-auto h-[82px] lg:h-[88px] px-4 sm:px-6 md:px-8 lg:px-14 xl:px-24 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
-          <img
+          <Image
             src={logoAbricot}
             alt="Abricot"
             className="w-[120px] sm:w-[135px] lg:w-[150px] object-contain"
+            priority
           />
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-6 xl:gap-10">
-          {/* dashboard button */}
+          {/* Dashboard */}
           <Link
-            to="/dashboard"
+            href="/dashboard"
             className={`transition-all duration-300 ${
-              location.pathname === "/dashboard"
-                ? "h-[62px] px-7 xl:px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-3 text-[16px] xl:text-[18px] font-sm hover:scale-[1.02] hover:shadow-lg"
-                : "flex items-center gap-3 text-[#d45d00] text-[16px] xl:text-[22px] font-sm hover:opacity-80"
+              pathname === "/dashboard"
+                ? "h-[62px] px-7 xl:px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-3 text-[16px] xl:text-[18px] font-medium hover:scale-[1.02] hover:shadow-lg"
+                : "flex items-center gap-3 text-[#d45d00] text-[16px] xl:text-[22px] font-medium hover:opacity-80"
             }`}
           >
             <LayoutDashboard
-              size={
-                location.pathname === "/dashboard"
-                  ? 24
-                  : 26
-              }
+              size={pathname === "/dashboard" ? 24 : 26}
             />
 
             <span>Tableau de bord</span>
           </Link>
 
-          {/* projets button */}
+          {/* Projects */}
           <Link
-            to="/projects"
+            href="/projects"
             className={`transition-all duration-300 ${
-              location.pathname === "/projects"
-                ? "h-[62px] px-7 xl:px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-3 text-[16px] xl:text-[18px] font-sm hover:scale-[1.02] hover:shadow-lg"
-                : "flex items-center gap-3 text-[#d45d00] text-[16px] xl:text-[22px] font-sm hover:opacity-80"
+              pathname === "/projects"
+                ? "h-[62px] px-7 xl:px-10 rounded-[14px] bg-[#050505] text-white flex items-center gap-3 text-[16px] xl:text-[18px] font-medium hover:scale-[1.02] hover:shadow-lg"
+                : "flex items-center gap-3 text-[#d45d00] text-[16px] xl:text-[22px] font-medium hover:opacity-80"
             }`}
           >
             <Folder
-              size={
-                location.pathname === "/projects"
-                  ? 24
-                  : 26
-              }
+              size={pathname === "/projects" ? 24 : 26}
             />
 
             <span>Projets</span>
@@ -83,29 +79,31 @@ export default function Navbar() {
       {/* MOBILE MENU */}
       {open && (
         <div className="lg:hidden border-t border-[#ececec] bg-white px-4 py-5 flex flex-col gap-4">
-          {/* dashboard mobile */}
+          {/* Dashboard Mobile */}
           <Link
-            to="/dashboard"
+            href="/dashboard"
             className={`transition-all duration-300 ${
-              location.pathname === "/dashboard"
+              pathname === "/dashboard"
                 ? "w-full h-[56px] rounded-[14px] bg-[#050505] text-white flex items-center gap-3 px-5 text-[16px] font-medium"
                 : "w-full h-[56px] rounded-[14px] border border-[#ececec] text-[#d45d00] flex items-center gap-3 px-5 text-[16px] font-medium"
             }`}
           >
             <LayoutDashboard size={22} />
+
             <span>Tableau de bord</span>
           </Link>
 
-          {/* projets mobile */}
+          {/* Projects Mobile */}
           <Link
-            to="/projects"
+            href="/projects"
             className={`transition-all duration-300 ${
-              location.pathname === "/projects"
+              pathname === "/projects"
                 ? "w-full h-[56px] rounded-[14px] bg-[#050505] text-white flex items-center gap-3 px-5 text-[16px] font-medium"
                 : "w-full h-[56px] rounded-[14px] border border-[#ececec] text-[#d45d00] flex items-center gap-3 px-5 text-[16px] font-medium"
             }`}
           >
             <Folder size={22} />
+
             <span>Projets</span>
           </Link>
         </div>

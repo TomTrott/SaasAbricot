@@ -37,10 +37,11 @@ app.use(
       process.env.NODE_ENV === "production"
         ? ["https://votre-domaine.com"]
         : [
-            "http://localhost:5173",
-            "http://localhost:8000",
-            "http://localhost:8001",
-          ],
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:8000",
+  "http://localhost:8001",
+],
     credentials: true,
   })
 );
