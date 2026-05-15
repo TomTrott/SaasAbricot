@@ -1,5 +1,6 @@
 "use client";
-import { LayoutDashboard, Folder, Menu, } from "lucide-react";
+
+import { LayoutDashboard, Folder, Menu } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,13 +8,16 @@ import { usePathname } from "next/navigation";
 import logoAbricot from "../../assets/logoabricot.png";
 
 export default function Navbar() {
+
   const [open, setOpen] = useState(false);
 
   const pathname = usePathname();
 
   return (
     <nav className="w-full bg-white border-b border-[#ececec] sticky top-0 z-50">
+
       <div className="max-w-[1700px] mx-auto h-[82px] lg:h-[88px] px-4 sm:px-6 md:px-8 lg:px-14 xl:px-24 flex items-center justify-between">
+
         {/* Logo */}
         <div className="flex items-center">
           <Image
@@ -26,6 +30,7 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-6 xl:gap-10">
+
           {/* Dashboard */}
           <Link
             href="/dashboard"
@@ -35,9 +40,7 @@ export default function Navbar() {
                 : "flex items-center gap-3 text-[#d45d00] text-[16px] xl:text-[22px] font-medium hover:opacity-80"
             }`}
           >
-            <LayoutDashboard
-              size={pathname === "/dashboard" ? 24 : 26}
-            />
+            <LayoutDashboard size={pathname === "/dashboard" ? 24 : 26} />
 
             <span>Tableau de bord</span>
           </Link>
@@ -51,20 +54,27 @@ export default function Navbar() {
                 : "flex items-center gap-3 text-[#d45d00] text-[16px] xl:text-[22px] font-medium hover:opacity-80"
             }`}
           >
-            <Folder
-              size={pathname === "/projects" ? 24 : 26}
-            />
+            <Folder size={pathname === "/projects" ? 24 : 26} />
 
             <span>Projets</span>
           </Link>
+
         </div>
 
         {/* Right */}
         <div className="flex items-center gap-4">
+
           {/* Avatar */}
-          <div className="hidden sm:flex w-[54px] h-[54px] lg:w-[64px] lg:h-[64px] rounded-full bg-[#f4e4d9] items-center justify-center text-[18px] lg:text-[22px] text-[#222] font-medium transition-all duration-300 hover:scale-105">
+          <Link
+            href="/profile"
+            className={`hidden sm:flex w-[54px] h-[54px] lg:w-[64px] lg:h-[64px] rounded-full items-center justify-center text-[18px] lg:text-[22px] font-medium transition-all duration-300 hover:scale-105 cursor-pointer ${
+              pathname === "/profile"
+                ? "bg-[#d45d00] text-white"
+                : "bg-[#f4e4d9] text-[#222]"
+            }`}
+          >
             AD
-          </div>
+          </Link>
 
           {/* Mobile Button */}
           <button
@@ -73,12 +83,15 @@ export default function Navbar() {
           >
             <Menu size={24} />
           </button>
+
         </div>
+
       </div>
 
-      {/* MOBILE MENU */}
+      {/* Mobile Menu */}
       {open && (
         <div className="lg:hidden border-t border-[#ececec] bg-white px-4 py-5 flex flex-col gap-4">
+
           {/* Dashboard Mobile */}
           <Link
             href="/dashboard"
@@ -106,8 +119,22 @@ export default function Navbar() {
 
             <span>Projets</span>
           </Link>
+
+          {/* Profile Mobile */}
+          <Link
+            href="/profile"
+            className={`transition-all duration-300 ${
+              pathname === "/profile"
+                ? "w-full h-[56px] rounded-[14px] bg-[#d45d00] text-white flex items-center gap-3 px-5 text-[16px] font-medium"
+                : "w-full h-[56px] rounded-[14px] border border-[#ececec] text-[#d45d00] flex items-center gap-3 px-5 text-[16px] font-medium"
+            }`}
+          >
+            <span>Profil</span>
+          </Link>
+
         </div>
       )}
+
     </nav>
   );
 }

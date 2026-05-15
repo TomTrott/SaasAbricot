@@ -1,4 +1,3 @@
-// src/components/pages/ProjectsPage.tsx
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import ProjectGrid from "../Projects/ProjectGrid";

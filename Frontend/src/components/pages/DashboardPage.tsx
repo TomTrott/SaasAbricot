@@ -1,8 +1,6 @@
 "use client";
-
 import { useState } from "react";
 import { SquareCheckBig, KanbanSquare } from "lucide-react";
-
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import TaskListView from "../Dashboard/TaskListView";

@@ -1,14 +1,9 @@
-// src/components/pages/LoginPage.tsx
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
 import api from "@/services/api";
-
 import bannerLogin from "@/assets/images/bannierelogin.png";
 import logoAbricot from "@/assets/logoabricot.png";
-
 import Image from "next/image";
 
 export default function LoginPage() {
