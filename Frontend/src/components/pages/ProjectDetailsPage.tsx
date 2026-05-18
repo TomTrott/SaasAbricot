@@ -2,8 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Calendar, ChevronDown, MoreHorizontal, Search, Sparkles, } from "lucide-react";
+
+import {
+  ArrowLeft,
+  Calendar,
+  ChevronDown,
+  MoreHorizontal,
+  Search,
+  Sparkles,
+} from "lucide-react";
+
 import api from "@/services/api";
+
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import EditProjectModal from "../Projects/EditProjectModal";
@@ -12,11 +22,17 @@ export default function ProjectDetailsPage() {
   const router = useRouter();
 
   const params = useParams();
+
   const projectId = params.id;
 
   const [project, setProject] = useState<any>(null);
+
   const [tasks, setTasks] = useState<any[]>([]);
+
   const [loading, setLoading] = useState(true);
+
+  const [isEditModalOpen, setIsEditModalOpen] =
+    useState(false);
 
   useEffect(() => {
     if (!projectId) return;
@@ -28,12 +44,17 @@ export default function ProjectDetailsPage() {
     try {
       setLoading(true);
 
-      const [projectRes, tasksRes] = await Promise.all([
-        api.get(`/projects/${projectId}`),
-        api.get(`/projects/${projectId}/tasks`),
-      ]);
+      const [projectRes, tasksRes] =
+        await Promise.all([
+          api.get(`/projects/${projectId}`),
+
+          api.get(
+            `/projects/${projectId}/tasks`
+          ),
+        ]);
 
       setProject(projectRes.data.data.project);
+
       setTasks(tasksRes.data.data.tasks);
     } catch (error) {
       console.error(error);
@@ -42,7 +63,9 @@ export default function ProjectDetailsPage() {
     }
   };
 
-  const getStatusLabel = (status: string) => {
+  const getStatusLabel = (
+    status: string
+  ) => {
     switch (status) {
       case "TODO":
         return "À faire";
@@ -58,7 +81,9 @@ export default function ProjectDetailsPage() {
     }
   };
 
-  const getStatusStyle = (status: string) => {
+  const getStatusStyle = (
+    status: string
+  ) => {
     switch (status) {
       case "TODO":
         return "bg-[#fdecec] text-[#ef4444]";
@@ -73,9 +98,6 @@ export default function ProjectDetailsPage() {
         return "bg-gray-100 text-gray-500";
     }
   };
-
-  const [isEditModalOpen, setIsEditModalOpen] =
-    useState(false);
 
   if (loading) {
     return (
@@ -123,23 +145,35 @@ export default function ProjectDetailsPage() {
                   {project.name}
                 </h1>
 
-                <button
-                  onClick={() => setIsEditModalOpen(true)}
-                  className="text-[15px] text-[#d45d00] transition-all hover:underline"
-                >
-                  Modifier
-                </button>
+                {/* BOUTON MODIFIER UNIQUEMENT SI ADMIN OU OWNER */}
+                {(project.userRole === "OWNER" ||
+                  project.userRole ===
+                    "ADMIN") && (
+                  <button
+                    onClick={() =>
+                      setIsEditModalOpen(true)
+                    }
+                    className="text-[15px] text-[#d45d00] transition-all hover:underline"
+                  >
+                    Modifier
+                  </button>
+                )}
 
                 <EditProjectModal
                   isOpen={isEditModalOpen}
-                  onClose={() => setIsEditModalOpen(false)}
-                  onProjectUpdated={fetchProject}
+                  onClose={() =>
+                    setIsEditModalOpen(false)
+                  }
+                  onProjectUpdated={
+                    fetchProject
+                  }
                   project={project}
                 />
               </div>
 
               <p className="max-w-[900px] text-[18px] leading-relaxed text-[#8b8f98]">
-                {project.description || "Aucune description"}
+                {project.description ||
+                  "Aucune description"}
               </p>
             </div>
           </div>
@@ -168,7 +202,9 @@ export default function ProjectDetailsPage() {
               </h2>
 
               <span className="text-[16px] text-[#8b8f98]">
-                {1 + project.members.length} personnes
+                {1 +
+                  project.members.length}{" "}
+                personnes
               </span>
             </div>
 
@@ -187,22 +223,25 @@ export default function ProjectDetailsPage() {
               </div>
 
               {/* MEMBERS */}
-              {project.members.map((member: any) => (
-                <div
-                  key={member.id}
-                  className="flex items-center gap-2"
-                >
-                  <div className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#ececf1] text-[11px] uppercase text-[#1f1f1f]">
-                    {member.user?.name?.[0] ||
-                      member.user?.email?.[0]}
-                  </div>
+              {project.members.map(
+                (member: any) => (
+                  <div
+                    key={member.id}
+                    className="flex items-center gap-2"
+                  >
+                    <div className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#ececf1] text-[11px] uppercase text-[#1f1f1f]">
+                      {member.user?.name?.[0] ||
+                        member.user
+                          ?.email?.[0]}
+                    </div>
 
-                  <div className="flex h-[30px] items-center justify-center rounded-full bg-[#ececf1] px-4 text-[14px] text-[#6b7280]">
-                    {member.user?.name ||
-                      member.user?.email}
+                    <div className="flex h-[30px] items-center justify-center rounded-full bg-[#ececf1] px-4 text-[14px] text-[#6b7280]">
+                      {member.user?.name ||
+                        member.user?.email}
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
           </div>
         </div>
@@ -281,7 +320,9 @@ export default function ProjectDetailsPage() {
                           task.status
                         )}`}
                       >
-                        {getStatusLabel(task.status)}
+                        {getStatusLabel(
+                          task.status
+                        )}
                       </div>
                     </div>
 
@@ -306,37 +347,47 @@ export default function ProjectDetailsPage() {
                       Échéance :{" "}
                       {new Date(
                         task.dueDate
-                      ).toLocaleDateString("fr-FR", {
-                        day: "numeric",
-                        month: "long",
-                      })}
+                      ).toLocaleDateString(
+                        "fr-FR",
+                        {
+                          day: "numeric",
+                          month: "long",
+                        }
+                      )}
                     </span>
                   </div>
                 )}
 
                 {/* ASSIGNEES */}
-                {task.assignees?.length > 0 && (
+                {task.assignees?.length >
+                  0 && (
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="text-[15px] text-[#8b8f98]">
                       Assigné à :
                     </span>
 
-                    {task.assignees.map((assignee: any) => (
-                      <div
-                        key={assignee.id}
-                        className="flex items-center gap-2"
-                      >
-                        <div className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#ececf1] text-[11px] uppercase">
-                          {assignee.user?.name?.[0] ||
-                            assignee.user?.email?.[0]}
-                        </div>
+                    {task.assignees.map(
+                      (assignee: any) => (
+                        <div
+                          key={assignee.id}
+                          className="flex items-center gap-2"
+                        >
+                          <div className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#ececf1] text-[11px] uppercase">
+                            {assignee.user
+                              ?.name?.[0] ||
+                              assignee.user
+                                ?.email?.[0]}
+                          </div>
 
-                        <div className="flex h-[30px] items-center justify-center rounded-full bg-[#ececf1] px-4 text-[14px] text-[#6b7280]">
-                          {assignee.user?.name ||
-                            assignee.user?.email}
+                          <div className="flex h-[30px] items-center justify-center rounded-full bg-[#ececf1] px-4 text-[14px] text-[#6b7280]">
+                            {assignee.user
+                              ?.name ||
+                              assignee.user
+                                ?.email}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    )}
                   </div>
                 )}
 
