@@ -2,35 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-
-import {
-  ArrowLeft,
-  Calendar,
-  ChevronDown,
-  MoreHorizontal,
-  Search,
-  Sparkles,
-} from "lucide-react";
-
+import { ArrowLeft, Calendar, ChevronDown, MoreHorizontal, Search, Sparkles, } from "lucide-react";
 import api from "@/services/api";
-
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import EditProjectModal from "../Projects/EditProjectModal";
 
 export default function ProjectDetailsPage() {
   const router = useRouter();
-
   const params = useParams();
-
   const projectId = params.id;
-
   const [project, setProject] = useState<any>(null);
-
   const [tasks, setTasks] = useState<any[]>([]);
-
   const [loading, setLoading] = useState(true);
-
   const [isEditModalOpen, setIsEditModalOpen] =
     useState(false);
 
@@ -39,7 +23,7 @@ export default function ProjectDetailsPage() {
 
     fetchProject();
   }, [projectId]);
-
+  // récupère les détails du projet et les tâches associées
   const fetchProject = async () => {
     try {
       setLoading(true);
@@ -62,7 +46,7 @@ export default function ProjectDetailsPage() {
       setLoading(false);
     }
   };
-
+  //affichage du statut comme la maquette
   const getStatusLabel = (
     status: string
   ) => {
@@ -80,7 +64,7 @@ export default function ProjectDetailsPage() {
         return status;
     }
   };
-
+  //affichage du statut avec une couleur différente selon le statut
   const getStatusStyle = (
     status: string
   ) => {
@@ -118,6 +102,22 @@ export default function ProjectDetailsPage() {
       </div>
     );
   }
+//suppression de projet si on est admin
+  const handleDeleteProject = async () => {
+  const confirmed = window.confirm(
+    "Voulez-vous vraiment supprimer ce projet ?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await api.delete(`/projects/${project.id}`);
+
+    router.push("/projects");
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f8f8f8]">
@@ -140,22 +140,30 @@ export default function ProjectDetailsPage() {
 
             {/* PROJECT INFOS */}
             <div>
-              <div className="mb-2 flex items-center gap-3">
+              <div className="mb-2 flex items-center gap-4">
                 <h1 className="text-[30px] font-semibold leading-none text-[#1f1f1f]">
                   {project.name}
                 </h1>
 
-                {/* BOUTON MODIFIER UNIQUEMENT SI ADMIN OU OWNER */}
-                {(project.userRole === "OWNER" ||
-                  project.userRole ===
-                    "ADMIN") && (
+                {/* MODIFIER ADMIN */}
+                {project.userRole === "ADMIN" && (
+                    <button
+                      onClick={() =>
+                        setIsEditModalOpen(true)
+                      }
+                      className="text-[15px] text-[#d45d00] transition-all hover:underline"
+                    >
+                      Modifier
+                    </button>
+                  )}
+
+                {/* DELETE UNIQUEMENT ADMIN */}
+                {project.userRole === "ADMIN" && (
                   <button
-                    onClick={() =>
-                      setIsEditModalOpen(true)
-                    }
-                    className="text-[15px] text-[#d45d00] transition-all hover:underline"
+                    onClick={handleDeleteProject}
+                    className="text-[15px] text-red-500 transition-all hover:underline"
                   >
-                    Modifier
+                    Supprimer
                   </button>
                 )}
 
@@ -164,9 +172,7 @@ export default function ProjectDetailsPage() {
                   onClose={() =>
                     setIsEditModalOpen(false)
                   }
-                  onProjectUpdated={
-                    fetchProject
-                  }
+                  onProjectUpdated={fetchProject}
                   project={project}
                 />
               </div>
@@ -361,35 +367,35 @@ export default function ProjectDetailsPage() {
                 {/* ASSIGNEES */}
                 {task.assignees?.length >
                   0 && (
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-[15px] text-[#8b8f98]">
-                      Assigné à :
-                    </span>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="text-[15px] text-[#8b8f98]">
+                        Assigné à :
+                      </span>
 
-                    {task.assignees.map(
-                      (assignee: any) => (
-                        <div
-                          key={assignee.id}
-                          className="flex items-center gap-2"
-                        >
-                          <div className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#ececf1] text-[11px] uppercase">
-                            {assignee.user
-                              ?.name?.[0] ||
-                              assignee.user
-                                ?.email?.[0]}
-                          </div>
+                      {task.assignees.map(
+                        (assignee: any) => (
+                          <div
+                            key={assignee.id}
+                            className="flex items-center gap-2"
+                          >
+                            <div className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#ececf1] text-[11px] uppercase">
+                              {assignee.user
+                                ?.name?.[0] ||
+                                assignee.user
+                                  ?.email?.[0]}
+                            </div>
 
-                          <div className="flex h-[30px] items-center justify-center rounded-full bg-[#ececf1] px-4 text-[14px] text-[#6b7280]">
-                            {assignee.user
-                              ?.name ||
-                              assignee.user
-                                ?.email}
+                            <div className="flex h-[30px] items-center justify-center rounded-full bg-[#ececf1] px-4 text-[14px] text-[#6b7280]">
+                              {assignee.user
+                                ?.name ||
+                                assignee.user
+                                  ?.email}
+                            </div>
                           </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-                )}
+                        )
+                      )}
+                    </div>
+                  )}
 
                 {/* COMMENTS */}
                 <div className="mt-8 border-t border-[#ececf1] pt-6">
