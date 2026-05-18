@@ -1,86 +1,159 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { SquareCheckBig, KanbanSquare } from "lucide-react";
+import { useEffect, useState, } from "react";
+import { SquareCheckBig, KanbanSquare, } from "lucide-react";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import TaskListView from "../Dashboard/TaskListView";
 import TaskKanbanView from "../Dashboard/TaskKanbanView";
+
 import CreateProjectModal from "../Projects/CreateProjectModal";
 
 export default function DashboardPage() {
-  const [view, setView] = useState<"list" | "kanban">("list");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [view, setView] =
+    useState<"list" | "kanban">(
+      "list"
+    );
 
-  const [user, setUser] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] =
+    useState(false);
 
+  const [user, setUser] =
+    useState<any>(null);
+
+  /**
+   * LOAD USER
+   */
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    const loadUser = () => {
+
+      const storedUser =
+        localStorage.getItem(
+          "user"
+        );
+
+      if (storedUser) {
+
+        setUser(
+          JSON.parse(storedUser)
+        );
+
+      } else {
+
+        setUser(null);
+
+      }
+    };
+
+    loadUser();
+
+    window.addEventListener(
+      "storage",
+      loadUser
+    );
+
+    return () => {
+
+      window.removeEventListener(
+        "storage",
+        loadUser
+      );
+    };
+
   }, []);
 
   const refreshProjects = () => {
+
     window.location.reload();
+
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f6f6f6]">
+    <div className="flex min-h-screen flex-col bg-[#f6f6f6]">
+
       <Navbar />
 
-      {/* Main content */}
-      <main className="flex-1 w-full max-w-[1700px] mx-auto px-4 sm:px-6 md:px-8 lg:px-14 xl:px-24 py-8 md:py-12">
+      {/* MAIN */}
+      <main className="mx-auto w-full max-w-[1700px] flex-1 px-4 py-8 sm:px-6 md:px-8 md:py-12 lg:px-14 xl:px-24">
+
         {/* HEADER */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-10">
+        <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+
           <div className="w-full">
-            <h1 className="text-[28px] sm:text-[32px] lg:text-[38px] font-bold text-[#1f1f1f] mb-2 leading-tight">
+
+            <h1 className="mb-2 text-[28px] font-bold leading-tight text-[#1f1f1f] sm:text-[32px] lg:text-[38px]">
               Tableau de bord
             </h1>
 
-            <p className="text-[15px] sm:text-[17px] lg:text-[18px] text-[#1f1f1f] leading-relaxed">
+            <p className="text-[15px] leading-relaxed text-[#1f1f1f] sm:text-[17px] lg:text-[18px]">
+
               Bonjour{" "}
+
               <span className="font-semibold">
-                {user?.name || user?.email || "Utilisateur"}
+
+                {user?.name ||
+                  user?.email ||
+                  "Utilisateur"}
+
               </span>
+
               , voici un aperçu de vos projets et tâches
+
             </p>
           </div>
 
+          {/* CREATE */}
           <button
-            onClick={() => setIsModalOpen(true)}
-            className="w-full sm:w-fit whitespace-nowrap bg-[#1f1f23] text-white h-[54px] px-7 rounded-[14px] text-[16px] sm:text-[18px] lg:text-[20px] transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:bg-black active:scale-[0.98]"
+            onClick={() =>
+              setIsModalOpen(true)
+            }
+            className="h-[54px] w-full whitespace-nowrap rounded-[14px] bg-[#1f1f23] px-7 text-[16px] text-white transition-all duration-300 hover:scale-[1.02] hover:bg-black hover:shadow-xl active:scale-[0.98] sm:w-fit sm:text-[18px] lg:text-[20px]"
           >
+
             + Créer un projet
+
           </button>
         </div>
 
-        {/* Boutons vues liste et kanban */}
-        <div className="flex flex-wrap items-center gap-3 mb-8">
+        {/* SWITCH */}
+        <div className="mb-8 flex flex-wrap items-center gap-3">
+
+          {/* LIST */}
           <button
-            onClick={() => setView("list")}
-            className={`h-[48px] sm:h-[50px] px-5 sm:px-6 rounded-[12px] flex items-center gap-3 text-[15px] sm:text-[17px] lg:text-[18px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] ${
+            onClick={() =>
+              setView("list")
+            }
+            className={`flex h-[48px] items-center gap-3 rounded-[12px] px-5 text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] sm:h-[50px] sm:px-6 sm:text-[17px] lg:text-[18px] ${
               view === "list"
                 ? "bg-[#f7dfd1] text-[#d45d00] shadow-md"
-                : "bg-white border border-[#ececec] text-[#d45d00] hover:bg-[#fff6f1]"
+                : "border border-[#ececec] bg-white text-[#d45d00] hover:bg-[#fff6f1]"
             }`}
           >
+
             <SquareCheckBig size={18} />
+
             Liste
+
           </button>
 
+          {/* KANBAN */}
           <button
-            onClick={() => setView("kanban")}
-            className={`h-[48px] sm:h-[50px] px-5 sm:px-6 rounded-[12px] flex items-center gap-3 text-[15px] sm:text-[17px] lg:text-[18px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] ${
+            onClick={() =>
+              setView("kanban")
+            }
+            className={`flex h-[48px] items-center gap-3 rounded-[12px] px-5 text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] sm:h-[50px] sm:px-6 sm:text-[17px] lg:text-[18px] ${
               view === "kanban"
                 ? "bg-[#f7dfd1] text-[#d45d00] shadow-md"
-                : "bg-white border border-[#ececec] text-[#d45d00] hover:bg-[#fff6f1]"
+                : "border border-[#ececec] bg-white text-[#d45d00] hover:bg-[#fff6f1]"
             }`}
           >
+
             <KanbanSquare size={18} />
+
             Kanban
+
           </button>
         </div>
 
@@ -90,14 +163,20 @@ export default function DashboardPage() {
         ) : (
           <TaskKanbanView />
         )}
+
       </main>
 
       <Footer />
 
+      {/* MODAL */}
       <CreateProjectModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onProjectCreated={refreshProjects}
+        onClose={() =>
+          setIsModalOpen(false)
+        }
+        onProjectCreated={
+          refreshProjects
+        }
       />
     </div>
   );

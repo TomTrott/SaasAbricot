@@ -3,124 +3,251 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-
 import api from "@/services/api";
-
 import bannerLogin from "@/assets/images/bannierelogin.png";
 import logoAbricot from "@/assets/logoabricot.png";
 
 export default function LoginPage() {
+
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] =
+    useState("");
 
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [password, setPassword] =
+    useState("");
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const [error, setError] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const handleLogin = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+
     e.preventDefault();
 
     setError("");
+
     setLoading(true);
 
     try {
-      const response = await api.post("/auth/login", {
-        email,
-        password,
-      });
 
-      const token = response.data.data.token;
+      const response =
+        await api.post(
+          "/auth/login",
+          {
+            email,
+            password,
+          }
+        );
 
-      localStorage.setItem("token", token);
+      /**
+       * TOKEN
+       */
+      const token =
+        response.data.data.token;
 
+      /**
+       * USER
+       */
+      const user =
+        response.data.data.user;
+
+      /**
+       * RESET ancien user
+       */
+      localStorage.removeItem("user");
+
+      /**
+       * SAVE
+       */
+      localStorage.setItem(
+        "token",
+        token
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+      );
+
+      /**
+       * REDIRECT
+       */
       router.push("/dashboard");
+
     } catch (error) {
+
       console.error(error);
 
-      setError("Email ou mot de passe incorrect.");
+      setError(
+        "Email ou mot de passe incorrect."
+      );
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
   return (
     <div className="min-h-screen flex bg-[#f3f3f3] overflow-hidden">
-      <div className="w-full lg:w-[39%] bg-[#f3f3f3] relative flex items-center justify-center px-8">
-        <div className="absolute top-20 left-1/2 -translate-x-1/2">
-          <Image src={logoAbricot} alt="Logo Abricot" className="w-[320px] h-auto" priority />
+
+      {/* LEFT */}
+      <div className="relative flex w-full items-center justify-center bg-[#f3f3f3] px-8 lg:w-[39%]">
+
+        {/* LOGO */}
+        <div className="absolute left-1/2 top-20 -translate-x-1/2">
+
+          <Image
+            src={logoAbricot}
+            alt="Logo Abricot"
+            className="h-auto w-[320px]"
+            priority
+          />
+
         </div>
 
-        <div className="w-full max-w-[360px] flex flex-col min-h-[600px]">
-          <h1 className="text-[58px] font-bold text-[#d45d00] mb-14 mt-4 leading-none text-center">
+        <div className="flex min-h-[600px] w-full max-w-[360px] flex-col">
+
+          <h1 className="mt-4 mb-14 text-center text-[58px] font-bold leading-none text-[#d45d00]">
             Connexion
           </h1>
 
-          <form onSubmit={handleLogin} className="flex flex-col gap-6">
+          <form
+            onSubmit={handleLogin}
+            className="flex flex-col gap-6"
+          >
+
+            {/* EMAIL */}
             <div>
-              <label htmlFor="email" className="block text-[18px] text-[#1d1d1d] mb-3">
+
+              <label
+                htmlFor="email"
+                className="mb-3 block text-[18px] text-[#1d1d1d]"
+              >
                 Email
               </label>
 
-              <input id="email" name="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2 focus:border-[#d45d00]" />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) =>
+                  setEmail(
+                    e.target.value
+                  )
+                }
+                className="h-[54px] w-full rounded-[4px] border border-[#d8d8d8] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:border-[#d45d00] focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
+              />
+
             </div>
 
+            {/* PASSWORD */}
             <div>
-              <label htmlFor="password" className="block text-[18px] text-[#1d1d1d] mb-3">
+
+              <label
+                htmlFor="password"
+                className="mb-3 block text-[18px] text-[#1d1d1d]"
+              >
                 Mot de passe
               </label>
 
-              <input id="password" name="password" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2 focus:border-[#d45d00]" />
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) =>
+                  setPassword(
+                    e.target.value
+                  )
+                }
+                className="h-[54px] w-full rounded-[4px] border border-[#d8d8d8] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:border-[#d45d00] focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
+              />
+
             </div>
 
+            {/* ERROR */}
             {error && (
-              <p role="alert" aria-live="assertive" className="text-red-600 text-[15px]">
+
+              <p
+                role="alert"
+                aria-live="assertive"
+                className="text-[15px] text-red-600"
+              >
                 {error}
               </p>
+
             )}
 
+            {/* BUTTON */}
             <button
               type="submit"
               disabled={loading}
               aria-busy={loading}
-              className="w-full h-[58px] bg-[#1f1f23] hover:bg-black disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 rounded-[12px] text-white text-[24px] focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
+              className="h-[58px] w-full rounded-[12px] bg-[#1f1f23] text-[24px] text-white transition-all duration-200 hover:bg-black disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
             >
-              {loading ? "Connexion..." : "Se connecter"}
+
+              {loading
+                ? "Connexion..."
+                : "Se connecter"}
+
             </button>
           </form>
 
+          {/* FOOTER */}
           <div className="mt-auto text-center">
+
             <button
               type="button"
-              className="text-[#c45100] underline text-[18px] font-semibold focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2 rounded-[4px]"
+              className="rounded-[4px] text-[18px] font-semibold text-[#c45100] underline focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
             >
               Mot de passe oublié ?
             </button>
 
-            <div className="flex items-center justify-center gap-2 text-[20px] mt-10 whitespace-nowrap">
+            <div className="mt-10 flex items-center justify-center gap-2 whitespace-nowrap text-[20px]">
+
               <span className="text-[#1d1d1d]">
                 Pas encore de compte ?
               </span>
 
               <button
                 type="button"
-                onClick={() => router.push("/register")}
-                className="text-[#c45100] underline font-semibold focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2 rounded-[4px]"
+                onClick={() =>
+                  router.push(
+                    "/register"
+                  )
+                }
+                className="rounded-[4px] font-semibold text-[#c45100] underline focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
               >
                 Créer un compte
               </button>
+
             </div>
           </div>
         </div>
       </div>
 
-      <div className="hidden lg:block lg:w-[61%] h-screen">
+      {/* RIGHT */}
+      <div className="hidden h-screen lg:block lg:w-[61%]">
+
         <Image
           src={bannerLogin}
           alt="Illustration de la page de connexion"
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
           priority
         />
+
       </div>
     </div>
   );
