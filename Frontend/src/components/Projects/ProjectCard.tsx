@@ -1,10 +1,15 @@
+"use client";
+
 import { Users } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   project: any;
 };
 
 export default function ProjectCard({ project }: Props) {
+  const router = useRouter();
+
   const totalTasks = project?._count?.tasks || 0;
 
   // temporaire
@@ -18,7 +23,12 @@ export default function ProjectCard({ project }: Props) {
   const owner = project.owner;
 
   return (
-    <div className="bg-white border border-[#e7e7e7] rounded-[18px] p-6 sm:p-7 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+    <div
+      onClick={() =>
+        router.push(`/projects/${project.id}`)
+      }
+      className="bg-white border border-[#e7e7e7] rounded-[18px] p-6 sm:p-7 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer"
+    >
       {/* TITLE */}
       <div className="mb-10">
         <h2 className="text-[22px] font-semibold text-[#1f1f1f] mb-3">
@@ -26,7 +36,8 @@ export default function ProjectCard({ project }: Props) {
         </h2>
 
         <p className="text-[15px] leading-relaxed text-[#8b8f98]">
-          {project.description || "Aucune description"}
+          {project.description ||
+            "Aucune description"}
         </p>
       </div>
 
@@ -52,7 +63,8 @@ export default function ProjectCard({ project }: Props) {
         </div>
 
         <p className="text-[13px] text-[#8b8f98]">
-          {tasksCompleted}/{totalTasks} tâches terminées
+          {tasksCompleted}/{totalTasks} tâches
+          terminées
         </p>
       </div>
 
@@ -71,7 +83,8 @@ export default function ProjectCard({ project }: Props) {
           {owner && (
             <>
               <div className="w-[34px] h-[34px] rounded-full bg-[#f5dfd2] flex items-center justify-center text-[12px] text-[#1f1f1f] uppercase">
-                {owner?.name?.[0] || owner?.email?.[0]}
+                {owner?.name?.[0] ||
+                  owner?.email?.[0]}
               </div>
 
               <div className="h-[34px] px-4 rounded-full bg-[#fbe4d7] flex items-center justify-center text-[14px] text-[#d45d00] font-medium">
