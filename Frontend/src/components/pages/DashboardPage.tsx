@@ -18,7 +18,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#f6f6f6]">
       <Navbar />
-
+     {/* Main content */}
       <main className="flex-1 w-full max-w-[1700px] mx-auto px-4 sm:px-6 md:px-8 lg:px-14 xl:px-24 py-8 md:py-12">
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-10">
           <div className="w-full">
@@ -38,15 +38,14 @@ export default function DashboardPage() {
             + Créer un projet
           </button>
         </div>
-
+     {/* Boutons vues liste et kanban */}
         <div className="flex flex-wrap items-center gap-3 mb-8">
           <button
             onClick={() => setView("list")}
-            className={`h-[48px] sm:h-[50px] px-5 sm:px-6 rounded-[12px] flex items-center gap-3 text-[15px] sm:text-[17px] lg:text-[18px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] ${
-              view === "list"
+            className={`h-[48px] sm:h-[50px] px-5 sm:px-6 rounded-[12px] flex items-center gap-3 text-[15px] sm:text-[17px] lg:text-[18px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] ${view === "list"
                 ? "bg-[#f7dfd1] text-[#d45d00] shadow-md"
                 : "bg-white border border-[#ececec] text-[#d45d00] hover:bg-[#fff6f1]"
-            }`}
+              }`}
           >
             <SquareCheckBig size={18} />
             Liste
@@ -54,11 +53,10 @@ export default function DashboardPage() {
 
           <button
             onClick={() => setView("kanban")}
-            className={`h-[48px] sm:h-[50px] px-5 sm:px-6 rounded-[12px] flex items-center gap-3 text-[15px] sm:text-[17px] lg:text-[18px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] ${
-              view === "kanban"
+            className={`h-[48px] sm:h-[50px] px-5 sm:px-6 rounded-[12px] flex items-center gap-3 text-[15px] sm:text-[17px] lg:text-[18px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] ${view === "kanban"
                 ? "bg-[#f7dfd1] text-[#d45d00] shadow-md"
                 : "bg-white border border-[#ececec] text-[#d45d00] hover:bg-[#fff6f1]"
-            }`}
+              }`}
           >
             <KanbanSquare size={18} />
             Kanban
@@ -71,10 +69,10 @@ export default function DashboardPage() {
       <Footer />
 
       <CreateProjectModal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              onProjectCreated={refreshProjects}
-            />
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onProjectCreated={refreshProjects}
+      />
     </div>
   );
 }

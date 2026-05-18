@@ -66,9 +66,10 @@ export interface RemoveContributorRequest {
 export interface CreateTaskRequest {
   title: string;
   description?: string;
+  status?: "TODO" | "IN_PROGRESS" | "DONE" | "CANCELLED";
   priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
-  dueDate?: string; // ISO date string
-  assigneeIds?: string[]; // IDs des utilisateurs assignés à la tâche
+  dueDate?: string;
+  assigneeIds?: string[];
 }
 
 export interface UpdateTaskRequest {
@@ -76,8 +77,8 @@ export interface UpdateTaskRequest {
   description?: string;
   status?: "TODO" | "IN_PROGRESS" | "DONE" | "CANCELLED";
   priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
-  dueDate?: string; // ISO date string
-  assigneeIds?: string[]; // IDs des utilisateurs assignés à la tâche
+  dueDate?: string;
+  assigneeIds?: string[];
 }
 
 // Types pour les commentaires

@@ -40,7 +40,7 @@ export default function LoginPage() {
             className="w-[320px]"
           />
         </div>
-
+        {/* Conteneur du formulaire */}
         <div className="w-full max-w-[360px] flex flex-col min-h-[600px]">
           <h1 className="text-[58px] font-bold text-[#d45d00] mb-14 mt-4 leading-none text-center">
             Connexion

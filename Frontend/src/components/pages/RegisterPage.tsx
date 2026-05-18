@@ -41,7 +41,7 @@ export default function RegisterPage() {
           <h1 className="text-[58px] font-bold text-[#d45d00] mb-14 leading-none text-center">
             Inscription
           </h1>
-
+          {/* email */}
           <div className="mb-6">
             <label className="block text-[18px] text-[#1d1d1d] mb-3">
               Email
@@ -54,7 +54,7 @@ export default function RegisterPage() {
               className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] outline-none focus:border-[#d45d00]"
             />
           </div>
-
+          {/* mot de passe */}
           <div className="mb-8">
             <label className="block text-[18px] text-[#1d1d1d] mb-3">
               Mot de passe

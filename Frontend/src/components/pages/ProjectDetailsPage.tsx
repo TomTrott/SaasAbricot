@@ -7,6 +7,7 @@ import api from "@/services/api";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import EditProjectModal from "../Projects/EditProjectModal";
+import CreateTaskModal from "../Task/CreateTaskModal";
 
 export default function ProjectDetailsPage() {
   const router = useRouter();
@@ -16,6 +17,8 @@ export default function ProjectDetailsPage() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] =
+    useState(false);
+  const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] =
     useState(false);
 
   useEffect(() => {
@@ -46,6 +49,10 @@ export default function ProjectDetailsPage() {
       setLoading(false);
     }
   };
+
+  const [openTaskMenu, setOpenTaskMenu] =
+  useState<string | null>(null);
+  
   //affichage du statut comme la maquette
   const getStatusLabel = (
     status: string
@@ -102,22 +109,22 @@ export default function ProjectDetailsPage() {
       </div>
     );
   }
-//suppression de projet si on est admin
+  //suppression de projet si on est admin
   const handleDeleteProject = async () => {
-  const confirmed = window.confirm(
-    "Voulez-vous vraiment supprimer ce projet ?"
-  );
+    const confirmed = window.confirm(
+      "Voulez-vous vraiment supprimer ce projet ?"
+    );
 
-  if (!confirmed) return;
+    if (!confirmed) return;
 
-  try {
-    await api.delete(`/projects/${project.id}`);
+    try {
+      await api.delete(`/projects/${project.id}`);
 
-    router.push("/projects");
-  } catch (error) {
-    console.error(error);
-  }
-};
+      router.push("/projects");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f8f8f8]">
@@ -147,15 +154,15 @@ export default function ProjectDetailsPage() {
 
                 {/* MODIFIER ADMIN */}
                 {project.userRole === "ADMIN" && (
-                    <button
-                      onClick={() =>
-                        setIsEditModalOpen(true)
-                      }
-                      className="text-[15px] text-[#d45d00] transition-all hover:underline"
-                    >
-                      Modifier
-                    </button>
-                  )}
+                  <button
+                    onClick={() =>
+                      setIsEditModalOpen(true)
+                    }
+                    className="text-[15px] text-[#d45d00] transition-all hover:underline"
+                  >
+                    Modifier
+                  </button>
+                )}
 
                 {/* DELETE UNIQUEMENT ADMIN */}
                 {project.userRole === "ADMIN" && (
@@ -186,7 +193,10 @@ export default function ProjectDetailsPage() {
 
           {/* ACTIONS */}
           <div className="flex items-center gap-4">
-            <button className="h-[52px] rounded-[10px] bg-[#1f1f1f] px-7 text-[16px] font-medium text-white transition-all hover:opacity-90">
+            <button
+              onClick={() => setIsCreateTaskModalOpen(true)}
+              className="h-[52px] rounded-[10px] bg-[#1f1f1f] px-7 text-[16px] font-medium text-white transition-all hover:opacity-90"
+            >
               Créer une tâche
             </button>
 
@@ -196,6 +206,21 @@ export default function ProjectDetailsPage() {
               <span>IA</span>
             </button>
           </div>
+          {/* MODAL DE CRÉATION DE TÂCHE */}
+          <CreateTaskModal
+            isOpen={isCreateTaskModalOpen}
+            onClose={() =>
+              setIsCreateTaskModalOpen(false)
+            }
+            projectId={project.id}
+            members={[
+              {
+                user: project.owner,
+              },
+              ...project.members,
+            ]}
+            onTaskCreated={fetchProject}
+          />
         </div>
 
         {/* CONTRIBUTORS */}
@@ -339,9 +364,56 @@ export default function ProjectDetailsPage() {
                   </div>
 
                   {/* MENU */}
-                  <button className="flex h-[58px] w-[58px] items-center justify-center rounded-[16px] border border-[#ececf1] transition-all hover:bg-[#fafafa]">
-                    <MoreHorizontal size={20} />
-                  </button>
+                  <div className="relative">
+                    <button
+                      onClick={() =>
+                        setOpenTaskMenu(
+                          openTaskMenu === task.id
+                            ? null
+                            : task.id
+                        )
+                      }
+                      className="flex h-[58px] w-[58px] items-center justify-center rounded-[16px] border border-[#ececf1] transition-all hover:bg-[#fafafa]"
+                    >
+                      <MoreHorizontal size={20} />
+                    </button>
+
+                    {/* DROPDOWN */}
+                    {openTaskMenu === task.id && (
+                      <div className="absolute right-0 top-[70px] z-20 w-[180px] rounded-[14px] border border-[#ececf1] bg-white p-2 shadow-xl">
+                        <button
+                          onClick={async () => {
+                            const confirmed =
+                              window.confirm(
+                                "Voulez-vous supprimer cette tâche ?"
+                              );
+
+                            if (!confirmed)
+                              return;
+
+                            try {
+                              await api.delete(
+                                `/projects/${project.id}/tasks/${task.id}`
+                              );
+
+                              fetchProject();
+
+                              setOpenTaskMenu(
+                                null
+                              );
+                            } catch (error) {
+                              console.error(
+                                error
+                              );
+                            }
+                          }}
+                          className="flex h-[46px] w-full items-center rounded-[10px] px-4 text-left text-[15px] text-red-500 transition-all hover:bg-[#fafafa]"
+                        >
+                          Supprimer
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* DATE */}

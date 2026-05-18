@@ -286,6 +286,7 @@ export const validateUpdateProjectData = (data: {
 export const validateCreateTaskData = (data: {
   title: string;
   description?: string;
+  status?: string;
   priority?: string;
   dueDate?: string;
   assigneeIds?: string[];
@@ -294,7 +295,10 @@ export const validateCreateTaskData = (data: {
 
   // Validation du titre
   if (!data.title) {
-    errors.push({ field: "title", message: "Le titre de la tâche est requis" });
+    errors.push({
+      field: "title",
+      message: "Le titre de la tâche est requis",
+    });
   } else if (data.title.trim().length < 2) {
     errors.push({
       field: "title",
@@ -312,6 +316,17 @@ export const validateCreateTaskData = (data: {
     errors.push({
       field: "description",
       message: "La description ne peut pas dépasser 1000 caractères",
+    });
+  }
+
+  // Validation du statut
+  if (
+    data.status &&
+    !["TODO", "IN_PROGRESS", "DONE", "CANCELLED"].includes(data.status)
+  ) {
+    errors.push({
+      field: "status",
+      message: "Le statut doit être TODO, IN_PROGRESS, DONE ou CANCELLED",
     });
   }
 
@@ -392,7 +407,10 @@ export const validateUpdateTaskData = (data: {
   }
 
   // Validation de la description si fournie
-  if (data.description !== undefined && data.description.trim().length > 1000) {
+  if (
+    data.description !== undefined &&
+    data.description.trim().length > 1000
+  ) {
     errors.push({
       field: "description",
       message: "La description ne peut pas dépasser 1000 caractères",

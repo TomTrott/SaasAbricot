@@ -41,6 +41,7 @@ export const createTask = async (
     const {
       title,
       description,
+      status,
       priority,
       dueDate,
       assigneeIds,
@@ -56,6 +57,7 @@ export const createTask = async (
     const validationErrors = validateCreateTaskData({
       title,
       description,
+      status,
       priority,
       dueDate,
       assigneeIds,
@@ -119,6 +121,7 @@ export const createTask = async (
     const taskData = {
       title: title.trim(),
       description: description?.trim() || null,
+      status: status || "TODO",
       priority: priority || "MEDIUM",
       dueDate: dueDate ? new Date(dueDate) : null,
       projectId,
