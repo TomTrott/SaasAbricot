@@ -5,9 +5,15 @@ import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import TaskListView from "../Dashboard/TaskListView";
 import TaskKanbanView from "../Dashboard/TaskKanbanView";
+import CreateProjectModal from "../Projects/CreateProjectModal";
 
 export default function DashboardPage() {
   const [view, setView] = useState<"list" | "kanban">("list");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const refreshProjects = () => {
+    window.location.reload();
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f6f6f6]">
@@ -25,7 +31,10 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <button className="w-full sm:w-fit whitespace-nowrap bg-[#1f1f23] text-white h-[54px] px-7 rounded-[14px] text-[16px] sm:text-[18px] lg:text-[20px] transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:bg-black active:scale-[0.98]">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="w-full sm:w-fit whitespace-nowrap bg-[#1f1f23] text-white h-[54px] px-7 rounded-[14px] text-[16px] sm:text-[18px] lg:text-[20px] transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:bg-black active:scale-[0.98]"
+          >
             + Créer un projet
           </button>
         </div>
@@ -60,6 +69,12 @@ export default function DashboardPage() {
       </main>
 
       <Footer />
+
+      <CreateProjectModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onProjectCreated={refreshProjects}
+            />
     </div>
   );
 }

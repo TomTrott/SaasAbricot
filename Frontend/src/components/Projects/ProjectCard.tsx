@@ -1,26 +1,21 @@
 import { Users } from "lucide-react";
-import type { Project } from "../../data/mockdata";
 
 type Props = {
-  project: Project;
+  project: any;
 };
 
-export default function ProjectCard({
-  project,
-}: Props) {
+export default function ProjectCard({ project }: Props) {
+  const totalTasks = project?._count?.tasks || 0;
+
+  // temporaire
+  const tasksCompleted = 0;
+
   const progress =
-    (project.tasksCompleted /
-      project.totalTasks) *
-    100;
+    totalTasks > 0
+      ? (tasksCompleted / totalTasks) * 100
+      : 0;
 
-  const owner = project.members.find(
-    (member) => member.role === "OWNER"
-  );
-
-  const otherMembers =
-    project.members.filter(
-      (member) => member.role !== "OWNER"
-    );
+  const owner = project.owner;
 
   return (
     <div className="bg-white border border-[#e7e7e7] rounded-[18px] p-6 sm:p-7 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
@@ -31,7 +26,7 @@ export default function ProjectCard({
         </h2>
 
         <p className="text-[15px] leading-relaxed text-[#8b8f98]">
-          {project.description}
+          {project.description || "Aucune description"}
         </p>
       </div>
 
@@ -57,8 +52,7 @@ export default function ProjectCard({
         </div>
 
         <p className="text-[13px] text-[#8b8f98]">
-          {project.tasksCompleted}/
-          {project.totalTasks} tâches terminées
+          {tasksCompleted}/{totalTasks} tâches terminées
         </p>
       </div>
 
@@ -66,9 +60,9 @@ export default function ProjectCard({
       <div>
         <div className="flex items-center gap-2 text-[#8b8f98] text-[14px] mb-4">
           <Users size={15} />
+
           <span>
-            Équipe (
-            {project.members.length})
+            Équipe ({1 + project.members.length})
           </span>
         </div>
 
@@ -76,8 +70,8 @@ export default function ProjectCard({
           {/* owner */}
           {owner && (
             <>
-              <div className="w-[34px] h-[34px] rounded-full bg-[#f5dfd2] flex items-center justify-center text-[12px] text-[#1f1f1f]">
-                {owner.user.avatar}
+              <div className="w-[34px] h-[34px] rounded-full bg-[#f5dfd2] flex items-center justify-center text-[12px] text-[#1f1f1f] uppercase">
+                {owner?.name?.[0] || owner?.email?.[0]}
               </div>
 
               <div className="h-[34px] px-4 rounded-full bg-[#fbe4d7] flex items-center justify-center text-[14px] text-[#d45d00] font-medium">
@@ -87,12 +81,13 @@ export default function ProjectCard({
           )}
 
           {/* members */}
-          {otherMembers.map((member) => (
+          {project.members.map((member: any) => (
             <div
               key={member.id}
-              className="w-[34px] h-[34px] rounded-full bg-[#ececf1] flex items-center justify-center text-[12px] text-[#1f1f1f]"
+              className="w-[34px] h-[34px] rounded-full bg-[#ececf1] flex items-center justify-center text-[12px] text-[#1f1f1f] uppercase"
             >
-              {member.user.avatar}
+              {member.user?.name?.[0] ||
+                member.user?.email?.[0]}
             </div>
           ))}
         </div>

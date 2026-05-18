@@ -1,7 +1,50 @@
-import { projects } from "../../data/mockdata";
+"use client";
+
+import { useEffect, useState } from "react";
+import api from "../../services/api";
 import ProjectCard from "./ProjectCard";
 
 export default function ProjectGrid() {
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProjects = async () => {
+    try {
+      setLoading(true);
+
+      const response = await api.get("/projects");
+
+      setProjects(response.data.data.projects);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des projets:",
+        error
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="py-20 text-center text-gray-500">
+        Chargement des projets...
+      </div>
+    );
+  }
+
+  if (projects.length === 0) {
+    return (
+      <div className="bg-white border border-[#e7e7e7] rounded-[18px] p-10 text-center text-[#8b8f98]">
+        Aucun projet trouvé
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {projects.map((project) => (

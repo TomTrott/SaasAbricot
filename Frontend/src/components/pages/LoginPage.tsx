@@ -41,65 +41,69 @@ export default function LoginPage() {
           />
         </div>
 
-        <div className="w-full max-w-[360px]">
-          <h1 className="text-[58px] font-bold text-[#d45d00] mb-14 leading-none text-center">
+        <div className="w-full max-w-[360px] flex flex-col min-h-[600px]">
+          <h1 className="text-[58px] font-bold text-[#d45d00] mb-14 mt-4 leading-none text-center">
             Connexion
           </h1>
 
-          <div className="mb-8">
-            <label className="block text-[18px] text-[#1d1d1d] mb-3">
-              Email
-            </label>
+          {/* FORM */}
+          <div className="flex flex-col gap-6">
+            <div>
+              <label className="block text-[18px] text-[#1d1d1d] mb-3">
+                Email
+              </label>
 
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] outline-none focus:border-[#d45d00]"
-            />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] outline-none focus:border-[#d45d00]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[18px] text-[#1d1d1d] mb-3">
+                Mot de passe
+              </label>
+
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] outline-none focus:border-[#d45d00]"
+              />
+            </div>
+
+            <button
+              onClick={handleLogin}
+              className="w-full h-[58px] bg-[#1f1f23] hover:bg-black transition-all duration-200 rounded-[12px] text-white text-[24px]"
+            >
+              Se connecter
+            </button>
           </div>
 
-          <div className="mb-8">
-            <label className="block text-[18px] text-[#1d1d1d] mb-3">
-              Mot de passe
-            </label>
-
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] outline-none focus:border-[#d45d00]"
-            />
-          </div>
-
-          <button
-            onClick={handleLogin}
-            className="w-full h-[58px] bg-[#1f1f23] hover:bg-black transition-all duration-200 rounded-[12px] text-white text-[24px]"
-          >
-            Se connecter
-          </button>
-
-          <div className="mt-6 text-center">
+          {/* BOTTOM SECTION */}
+          <div className="mt-auto text-center">
             <button
               type="button"
               className="text-[#d45d00] underline text-[18px]"
             >
               Mot de passe oublié ?
             </button>
-          </div>
 
-          <div className="flex items-center justify-center gap-2 text-[20px] mt-32 whitespace-nowrap">
-            <span className="text-[#1d1d1d]">
-              Pas encore de compte ?
-            </span>
+            <div className="flex items-center justify-center gap-2 text-[20px] mt-10 whitespace-nowrap">
+              <span className="text-[#1d1d1d]">
+                Pas encore de compte ?
+              </span>
 
-            <button
-              type="button"
-              onClick={() => router.push("/register")}
-              className="text-[#ff6b00] underline"
-            >
-              Créer un compte
-            </button>
+              <button
+                type="button"
+                onClick={() => router.push("/register")}
+                className="text-[#ff6b00] underline"
+              >
+                Créer un compte
+              </button>
+            </div>
           </div>
         </div>
       </div>
