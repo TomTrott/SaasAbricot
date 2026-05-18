@@ -10,11 +10,8 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-red-100: oklch(93.6% 0.032 17.717);
     --color-red-500: oklch(63.7% 0.237 25.331);
-    --color-orange-100: oklch(95.4% 0.038 75.164);
-    --color-orange-500: oklch(70.5% 0.213 47.604);
-    --color-green-100: oklch(96.2% 0.044 156.743);
+    --color-red-600: oklch(57.7% 0.245 27.325);
     --color-green-600: oklch(62.7% 0.194 149.214);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
@@ -210,8 +207,8 @@
   .top-6 {
     top: calc(var(--spacing) * 6);
   }
-  .top-32 {
-    top: calc(var(--spacing) * 32);
+  .top-20 {
+    top: calc(var(--spacing) * 20);
   }
   .top-\[70px\] {
     top: 70px;
@@ -255,8 +252,8 @@
   .mt-10 {
     margin-top: calc(var(--spacing) * 10);
   }
-  .mt-32 {
-    margin-top: calc(var(--spacing) * 32);
+  .mt-20 {
+    margin-top: calc(var(--spacing) * 20);
   }
   .mt-auto {
     margin-top: auto;
@@ -318,9 +315,6 @@
   .h-\[48px\] {
     height: 48px;
   }
-  .h-\[50px\] {
-    height: 50px;
-  }
   .h-\[52px\] {
     height: 52px;
   }
@@ -339,23 +333,20 @@
   .h-\[82px\] {
     height: 82px;
   }
+  .h-auto {
+    height: auto;
+  }
   .h-full {
     height: 100%;
   }
   .h-screen {
     height: 100vh;
   }
-  .min-h-\[120px\] {
-    min-height: 120px;
-  }
   .min-h-\[600px\] {
     min-height: 600px;
   }
   .min-h-screen {
     min-height: 100vh;
-  }
-  .w-90 {
-    width: calc(var(--spacing) * 90);
   }
   .w-\[30px\] {
     width: 30px;
@@ -365,9 +356,6 @@
   }
   .w-\[48px\] {
     width: 48px;
-  }
-  .w-\[50px\] {
-    width: 50px;
   }
   .w-\[54px\] {
     width: 54px;
@@ -402,9 +390,6 @@
   .max-w-\[520px\] {
     max-width: 520px;
   }
-  .max-w-\[760px\] {
-    max-width: 760px;
-  }
   .max-w-\[900px\] {
     max-width: 900px;
   }
@@ -416,9 +401,6 @@
   }
   .min-w-\[36px\] {
     min-width: 36px;
-  }
-  .min-w-\[58px\] {
-    min-width: 58px;
   }
   .min-w-\[160px\] {
     min-width: 160px;
@@ -438,9 +420,6 @@
   }
   .cursor-pointer {
     cursor: pointer;
-  }
-  .resize-none {
-    resize: none;
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -478,9 +457,6 @@
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
-  .gap-8 {
-    gap: calc(var(--spacing) * 8);
-  }
   .space-y-5 {
     :where(& > :not(:last-child)) {
       --tw-space-y-reverse: 0;
@@ -508,12 +484,6 @@
   .rounded-\[4px\] {
     border-radius: 4px;
   }
-  .rounded-\[6px\] {
-    border-radius: 6px;
-  }
-  .rounded-\[8px\] {
-    border-radius: 8px;
-  }
   .rounded-\[10px\] {
     border-radius: 10px;
   }
@@ -528,15 +498,6 @@
   }
   .rounded-\[18px\] {
     border-radius: 18px;
-  }
-  .rounded-\[20px\] {
-    border-radius: 20px;
-  }
-  .rounded-\[22px\] {
-    border-radius: 22px;
-  }
-  .rounded-\[24px\] {
-    border-radius: 24px;
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
@@ -619,9 +580,6 @@
   .bg-\[\#f4e4d9\] {
     background-color: #f4e4d9;
   }
-  .bg-\[\#f4f4f4\] {
-    background-color: #f4f4f4;
-  }
   .bg-\[\#f5dfd2\] {
     background-color: #f5dfd2;
   }
@@ -667,15 +625,6 @@
   .bg-gray-100 {
     background-color: var(--color-gray-100);
   }
-  .bg-green-100 {
-    background-color: var(--color-green-100);
-  }
-  .bg-orange-100 {
-    background-color: var(--color-orange-100);
-  }
-  .bg-red-100 {
-    background-color: var(--color-red-100);
-  }
   .bg-transparent {
     background-color: transparent;
   }
@@ -705,9 +654,6 @@
   }
   .p-10 {
     padding: calc(var(--spacing) * 10);
-  }
-  .p-20 {
-    padding: calc(var(--spacing) * 20);
   }
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
@@ -744,9 +690,6 @@
   }
   .py-8 {
     padding-block: calc(var(--spacing) * 8);
-  }
-  .py-10 {
-    padding-block: calc(var(--spacing) * 10);
   }
   .py-16 {
     padding-block: calc(var(--spacing) * 16);
@@ -820,12 +763,6 @@
   .text-\[32px\] {
     font-size: 32px;
   }
-  .text-\[34px\] {
-    font-size: 34px;
-  }
-  .text-\[36px\] {
-    font-size: 36px;
-  }
   .text-\[58px\] {
     font-size: 58px;
   }
@@ -889,6 +826,9 @@
   .text-\[\#667085\] {
     color: #667085;
   }
+  .text-\[\#c45100\] {
+    color: #c45100;
+  }
   .text-\[\#d45d00\] {
     color: #d45d00;
   }
@@ -904,9 +844,6 @@
   .text-\[\#ff4d4d\] {
     color: #ff4d4d;
   }
-  .text-\[\#ff6b00\] {
-    color: #ff6b00;
-  }
   .text-gray-400 {
     color: var(--color-gray-400);
   }
@@ -916,11 +853,11 @@
   .text-green-600 {
     color: var(--color-green-600);
   }
-  .text-orange-500 {
-    color: var(--color-orange-500);
-  }
   .text-red-500 {
     color: var(--color-red-500);
+  }
+  .text-red-600 {
+    color: var(--color-red-600);
   }
   .text-white {
     color: var(--color-white);
@@ -1108,6 +1045,29 @@
       border-color: var(--color-black);
     }
   }
+  .focus\:ring-2 {
+    &:focus {
+      --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+  }
+  .focus\:ring-\[\#d45d00\] {
+    &:focus {
+      --tw-ring-color: #d45d00;
+    }
+  }
+  .focus\:ring-offset-2 {
+    &:focus {
+      --tw-ring-offset-width: 2px;
+      --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    }
+  }
+  .focus\:outline-none {
+    &:focus {
+      --tw-outline-style: none;
+      outline-style: none;
+    }
+  }
   .active\:scale-\[0\.97\] {
     &:active {
       scale: 0.97;
@@ -1118,9 +1078,19 @@
       scale: 0.98;
     }
   }
+  .disabled\:cursor-not-allowed {
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
   .disabled\:opacity-50 {
     &:disabled {
       opacity: 50%;
+    }
+  }
+  .disabled\:opacity-60 {
+    &:disabled {
+      opacity: 60%;
     }
   }
   .sm\:block {
@@ -1151,11 +1121,6 @@
   .sm\:w-\[140px\] {
     @media (width >= 40rem) {
       width: 140px;
-    }
-  }
-  .sm\:w-\[290px\] {
-    @media (width >= 40rem) {
-      width: 290px;
     }
   }
   .sm\:w-fit {
@@ -1231,11 +1196,6 @@
   .sm\:text-\[32px\] {
     @media (width >= 40rem) {
       font-size: 32px;
-    }
-  }
-  .sm\:text-\[34px\] {
-    @media (width >= 40rem) {
-      font-size: 34px;
     }
   }
   .md\:grid-cols-2 {

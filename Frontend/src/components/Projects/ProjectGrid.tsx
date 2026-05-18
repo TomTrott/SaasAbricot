@@ -13,8 +13,32 @@ export default function ProjectGrid() {
       setLoading(true);
 
       const response = await api.get("/projects");
+// Récupérer les tâches pour chaque projet
+      const projectsWithTasks = await Promise.all(
+        response.data.data.projects.map(
+          async (project: any) => {
+            try {
+              const tasksResponse = await api.get(
+                `/projects/${project.id}/tasks`
+              );
 
-      setProjects(response.data.data.projects);
+              return {
+                ...project,
+                tasks:
+                  tasksResponse.data.data.tasks,
+              };
+            } catch (error) {
+              return {
+                ...project,
+                tasks: [],
+              };
+            }
+          }
+        )
+      );
+
+      setProjects(projectsWithTasks);
+
     } catch (error) {
       console.error(
         "Erreur lors de la récupération des projets:",

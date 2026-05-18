@@ -9,11 +9,14 @@ type Props = {
 
 export default function ProjectCard({ project }: Props) {
   const router = useRouter();
+// Calcule progression taches
+  const totalTasks = project?.tasks?.length || 0;
 
-  const totalTasks = project?._count?.tasks || 0;
-
-  // temporaire
-  const tasksCompleted = 0;
+  const tasksCompleted =
+    project?.tasks?.filter(
+      (task: any) =>
+        task.status === "DONE"
+    ).length || 0;
 
   const progress =
     totalTasks > 0
