@@ -249,6 +249,9 @@
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
   }
+  .mt-3 {
+    margin-top: calc(var(--spacing) * 3);
+  }
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
   }
@@ -342,6 +345,9 @@
   .h-\[82px\] {
     height: 82px;
   }
+  .h-\[90\%\] {
+    height: 90%;
+  }
   .h-\[calc\(100vh-82px\)\] {
     height: calc(100vh - 82px);
   }
@@ -353,6 +359,12 @@
   }
   .h-screen {
     height: 100vh;
+  }
+  .max-h-\[90vh\] {
+    max-height: 90vh;
+  }
+  .min-h-\[120px\] {
+    min-height: 120px;
   }
   .min-h-\[600px\] {
     min-height: 600px;
@@ -512,6 +524,9 @@
   }
   .overflow-hidden {
     overflow: hidden;
+  }
+  .overflow-y-auto {
+    overflow-y: auto;
   }
   .rounded-\[4px\] {
     border-radius: 4px;

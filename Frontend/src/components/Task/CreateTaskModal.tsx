@@ -34,6 +34,15 @@ export default function CreateTaskModal({
     if (!isOpen) return null;
 
     const handleCreateTask = async () => {
+
+        // attribution obligatoire
+        if (assigneeIds.length === 0) {
+            alert(
+                "Veuillez attribuer la tâche à au moins un collaborateur."
+            );
+            return;
+        }
+
         try {
             setLoading(true);
 
@@ -75,7 +84,8 @@ export default function CreateTaskModal({
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/30 px-4">
-            <div className="relative w-full max-w-[520px] rounded-[16px] bg-white p-8 shadow-2xl">
+            <div className="relative w-full max-w-[520px] rounded-[10px] bg-white p-8 shadow-2xl">
+
                 {/* CLOSE */}
                 <button
                     onClick={onClose}
@@ -90,6 +100,7 @@ export default function CreateTaskModal({
                 </h2>
 
                 <div className="space-y-7">
+
                     {/* TITLE */}
                     <div>
                         <label className="mb-3 block text-[16px] text-[#1f1f1f]">
@@ -144,10 +155,11 @@ export default function CreateTaskModal({
                     {/* ASSIGNEES */}
                     <div>
                         <label className="mb-3 block text-[16px] text-[#1f1f1f]">
-                            Assigné à :
+                            Assigné à : *
                         </label>
 
                         <div className="rounded-[12px] border border-[#e7e7e7] p-4">
+
                             <div className="mb-4 flex items-center justify-between">
                                 <span className="text-[#8b8f98]">
                                     Choisir un ou plusieurs collaborateurs
@@ -168,12 +180,13 @@ export default function CreateTaskModal({
                                                     member.user.id
                                                 )
                                             }
-                                            className={`rounded-full px-4 py-2 text-[14px] ${assigneeIds.includes(
-                                                member.user.id
-                                            )
-                                                ? "bg-[#d45d00] text-white"
-                                                : "bg-[#f3f3f5] text-[#1f1f1f]"
-                                                }`}
+                                            className={`rounded-full px-4 py-2 text-[14px] transition-all ${
+                                                assigneeIds.includes(
+                                                    member.user.id
+                                                )
+                                                    ? "bg-[#d45d00] text-white"
+                                                    : "bg-[#f3f3f5] text-[#1f1f1f]"
+                                            }`}
                                         >
                                             {member.user.name ||
                                                 member.user.email}
@@ -181,6 +194,13 @@ export default function CreateTaskModal({
                                     )
                                 )}
                             </div>
+
+                            {/* MESSAGE ERREUR */}
+                            {assigneeIds.length === 0 && (
+                                <p className="mt-3 text-sm text-red-500">
+                                    Veuillez sélectionner au moins un collaborateur.
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -190,16 +210,18 @@ export default function CreateTaskModal({
                             Statut :
                         </label>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 flex-wrap">
+
                             <button
                                 type="button"
                                 onClick={() =>
                                     setStatus("TODO")
                                 }
-                                className={`rounded-full px-5 py-2 text-[14px] ${status === "TODO"
-                                    ? "bg-[#ef4444] text-white"
-                                    : "bg-[#fdecec] text-[#ef4444]"
-                                    }`}
+                                className={`rounded-full px-5 py-2 text-[14px] ${
+                                    status === "TODO"
+                                        ? "bg-[#ef4444] text-white"
+                                        : "bg-[#fdecec] text-[#ef4444]"
+                                }`}
                             >
                                 À faire
                             </button>
@@ -211,11 +233,12 @@ export default function CreateTaskModal({
                                         "IN_PROGRESS"
                                     )
                                 }
-                                className={`rounded-full px-5 py-2 text-[14px] ${status ===
+                                className={`rounded-full px-5 py-2 text-[14px] ${
+                                    status ===
                                     "IN_PROGRESS"
-                                    ? "bg-[#f59e0b] text-white"
-                                    : "bg-[#fff3e8] text-[#f59e0b]"
-                                    }`}
+                                        ? "bg-[#f59e0b] text-white"
+                                        : "bg-[#fff3e8] text-[#f59e0b]"
+                                }`}
                             >
                                 En cours
                             </button>
@@ -225,10 +248,11 @@ export default function CreateTaskModal({
                                 onClick={() =>
                                     setStatus("DONE")
                                 }
-                                className={`rounded-full px-5 py-2 text-[14px] ${status === "DONE"
-                                    ? "bg-[#22c55e] text-white"
-                                    : "bg-[#eaf8ef] text-[#22c55e]"
-                                    }`}
+                                className={`rounded-full px-5 py-2 text-[14px] ${
+                                    status === "DONE"
+                                        ? "bg-[#22c55e] text-white"
+                                        : "bg-[#eaf8ef] text-[#22c55e]"
+                                }`}
                             >
                                 Terminée
                             </button>
@@ -238,8 +262,11 @@ export default function CreateTaskModal({
                     {/* BUTTON */}
                     <button
                         onClick={handleCreateTask}
-                        disabled={loading}
-                        className="mt-6 h-[58px] rounded-[14px] bg-[#1f1f1f] px-8 text-[16px] font-medium text-white transition-all hover:opacity-90 disabled:opacity-50"
+                        disabled={
+                            loading ||
+                            assigneeIds.length === 0
+                        }
+                        className="mt-6 h-[58px] rounded-[14px] bg-[#1f1f1f] px-8 text-[16px] font-medium text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         {loading
                             ? "Création..."
