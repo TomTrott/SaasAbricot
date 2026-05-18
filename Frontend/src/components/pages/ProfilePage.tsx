@@ -1,5 +1,7 @@
 "use client";
+
 import { useEffect, useState } from "react";
+
 import Navbar from "@/components/Layout/Navbar";
 import Footer from "@/components/Layout/Footer";
 import api from "@/services/api";
@@ -11,30 +13,132 @@ type User = {
 };
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
+  const [user, setUser] = useState<User | null>(
+    null
+  );
+// Form states
+  const [firstName, setFirstName] =
+    useState("");
+  const [lastName, setLastName] =
+    useState("");
+  const [email, setEmail] =
+    useState("");
+  const [currentPassword, setCurrentPassword] =
+    useState("");
+  const [newPassword, setNewPassword] =
+    useState("");
+// UI states
+  const [loading, setLoading] =
+    useState(true);
+  const [saving, setSaving] =
+    useState(false);
+  const [isEditing, setIsEditing] =
+    useState(false);
+  const [message, setMessage] =
+    useState("");
+  const [error, setError] =
+    useState("");
+// Fetch profile on mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // Request profile from backend
-        const response = await api.get("/auth/profile");
-        // Save user in state
-        setUser(response.data.data.user);
+        const response = await api.get(
+          "/auth/profile"
+        );
+
+        const profileUser =
+          response.data.data.user;
+        setUser(profileUser);
+
+        const fullName =
+          profileUser.name || "";
+
+        const nameParts =
+          fullName.split(" ");
+        setFirstName(nameParts[0] || "");
+
+        setLastName(
+          nameParts.slice(1).join(" ") ||
+          ""
+        );
+
+        setEmail(profileUser.email);
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchProfile();
   }, []);
 
-  // Split fullname into firstname / lastname
-  const fullName = user?.name || "";
-  const nameParts = fullName.split(" ");
-  const firstName = nameParts[0] || "";
-  const lastName = nameParts.slice(1).join(" ") || "";
+  const handleSubmit = async (
+    e: React.FormEvent
+  ) => {
+    e.preventDefault();
+
+    // premier clic => active édition
+    if (!isEditing) {
+      setIsEditing(true);
+      return;
+    }
+
+    try {
+      setSaving(true);
+      setError("");
+      setMessage("");
+
+      const fullName =
+        `${firstName} ${lastName}`.trim();
+
+      // update profile
+      await api.put("/auth/profile", {
+        name: fullName,
+        email,
+      });
+
+      // update password
+      if (
+        currentPassword ||
+        newPassword
+      ) {
+        if (
+          !currentPassword ||
+          !newPassword
+        ) {
+          setError(
+            "Veuillez remplir l'ancien et le nouveau mot de passe"
+          );
+
+          setSaving(false);
+          return;
+        }
+      // call API to update password
+        await api.put("/auth/password", {
+          currentPassword,
+          newPassword,
+        });
+        setCurrentPassword("");
+        setNewPassword("");
+      }
+
+      setMessage(
+        "Informations mises à jour avec succès"
+      );
+
+      setIsEditing(false);
+    } catch (err: any) {
+      console.error(err);
+
+      setError(
+        err?.response?.data?.message ||
+        "Erreur lors de la mise à jour"
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -48,49 +152,62 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f5f5f5]">
-
       <Navbar />
 
-      {/* Page */}
       <main className="flex-1 px-4 sm:px-6 lg:px-10 py-6 lg:py-8">
-
-        {/* Container */}
         <div className="max-w-[1100px] mx-auto bg-white border border-[#e7e7e7] rounded-[18px] p-6 sm:p-8 lg:p-10">
-
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-[28px] font-semibold text-[#1f1f1f]">
               Mon compte
             </h1>
+
             <p className="text-[#8b8f98] text-[17px] mt-1">
               {user?.name}
             </p>
           </div>
 
-          {/* Form */}
-          <form className="flex flex-col gap-6">
-
-            {/* Last Name */}
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-6"
+          >
+            {/* Nom */}
             <div>
               <label className="block text-[15px] text-[#1f1f1f] mb-2">
                 Nom
               </label>
+
               <input
                 type="text"
-                defaultValue={lastName}
-                className="w-full h-[58px] border border-[#e5e5e5] rounded-[10px] px-4 outline-none text-[15px] text-[#1f1f1f] focus:border-[#d45d00]"
+                value={lastName}
+                disabled={!isEditing}
+                onChange={(e) =>
+                  setLastName(e.target.value)
+                }
+                className={`w-full h-[58px] border rounded-[10px] px-4 outline-none text-[15px] transition-all ${isEditing
+                  ? "border-[#e5e5e5] bg-white text-[#1f1f1f] focus:border-[#d45d00]"
+                  : "border-[#ececec] bg-[#f7f7f7] text-[#8b8f98] cursor-not-allowed"
+                  }`}
               />
             </div>
 
-            {/* First Name */}
+            {/* Prénom */}
             <div>
               <label className="block text-[15px] text-[#1f1f1f] mb-2">
                 Prénom
               </label>
+
               <input
                 type="text"
-                defaultValue={firstName}
-                className="w-full h-[58px] border border-[#e5e5e5] rounded-[10px] px-4 outline-none text-[15px] text-[#1f1f1f] focus:border-[#d45d00]"
+                value={firstName}
+                disabled={!isEditing}
+                onChange={(e) =>
+                  setFirstName(e.target.value)
+                }
+                className={`w-full h-[58px] border rounded-[10px] px-4 outline-none text-[15px] transition-all ${isEditing
+                  ? "border-[#e5e5e5] bg-white text-[#1f1f1f] focus:border-[#d45d00]"
+                  : "border-[#ececec] bg-[#f7f7f7] text-[#8b8f98] cursor-not-allowed"
+                  }`}
               />
             </div>
 
@@ -99,37 +216,95 @@ export default function ProfilePage() {
               <label className="block text-[15px] text-[#1f1f1f] mb-2">
                 Email
               </label>
+
               <input
                 type="email"
-                defaultValue={user?.email || ""}
-                className="w-full h-[58px] border border-[#e5e5e5] rounded-[10px] px-4 outline-none text-[15px] text-[#1f1f1f] focus:border-[#d45d00]"
+                value={email}
+                disabled={!isEditing}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
+                className={`w-full h-[58px] border rounded-[10px] px-4 outline-none text-[15px] transition-all ${isEditing
+                  ? "border-[#e5e5e5] bg-white text-[#1f1f1f] focus:border-[#d45d00]"
+                  : "border-[#ececec] bg-[#f7f7f7] text-[#8b8f98] cursor-not-allowed"
+                  }`}
               />
             </div>
 
-            {/* Password */}
+            {/* Mot de passe actuel */}
             <div>
               <label className="block text-[15px] text-[#1f1f1f] mb-2">
-                Mot de passe
+                Mot de passe actuel
               </label>
+
               <input
                 type="password"
+                value={currentPassword}
+                disabled={!isEditing}
+                onChange={(e) =>
+                  setCurrentPassword(
+                    e.target.value
+                  )
+                }
                 placeholder="••••••••"
-                className="w-full h-[58px] border border-[#e5e5e5] rounded-[10px] px-4 outline-none text-[15px] text-[#1f1f1f] focus:border-[#d45d00]"
+                className={`w-full h-[58px] border rounded-[10px] px-4 outline-none text-[15px] transition-all ${isEditing
+                  ? "border-[#e5e5e5] bg-white text-[#1f1f1f] focus:border-[#d45d00]"
+                  : "border-[#ececec] bg-[#f7f7f7] text-[#8b8f98] cursor-not-allowed"
+                  }`}
               />
             </div>
 
-            {/* Submit Button */}
+            {/* Nouveau mot de passe */}
+            {isEditing && (
+              <div>
+                <label className="block text-[15px] text-[#1f1f1f] mb-2">
+                  Nouveau mot de passe
+                </label>
+
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) =>
+                    setNewPassword(
+                      e.target.value
+                    )
+                  }
+                  placeholder="••••••••"
+                  className="w-full h-[58px] border border-[#e5e5e5] rounded-[10px] px-4 outline-none text-[15px] bg-white text-[#1f1f1f] focus:border-[#d45d00]"
+                />
+              </div>
+            )}
+
+            {/* Success */}
+            {message && (
+              <div className="text-green-600 text-sm">
+                {message}
+              </div>
+            )}
+
+            {/* Error */}
+            {error && (
+              <div className="text-red-500 text-sm">
+                {error}
+              </div>
+            )}
+
+            {/* Submit */}
             <button
               type="submit"
-              className="mt-2 w-fit h-[54px] px-7 rounded-[12px] bg-[#1f1f1f] text-white text-[16px] font-medium transition-all duration-300 hover:bg-black hover:scale-[1.02] hover:shadow-lg"
+              disabled={saving}
+              className="mt-2 w-fit h-[54px] px-7 rounded-[12px] bg-[#1f1f1f] text-white text-[16px] font-medium transition-all duration-300 hover:bg-black hover:scale-[1.02] hover:shadow-lg disabled:opacity-50"
             >
-              Modifier les informations
+              {saving
+                ? "Enregistrement..."
+                : isEditing
+                  ? "Enregistrer"
+                  : "Modifier les informations"}
             </button>
-
           </form>
         </div>
       </main>
-      {/* Footer */}
+
       <Footer />
     </div>
   );

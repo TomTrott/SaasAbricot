@@ -11,6 +11,7 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-red-500: oklch(63.7% 0.237 25.331);
+    --color-green-600: oklch(62.7% 0.194 149.214);
     --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-400: oklch(70.7% 0.022 261.325);
     --color-gray-500: oklch(55.1% 0.027 264.364);
@@ -361,6 +362,9 @@
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
+  .cursor-not-allowed {
+    cursor: not-allowed;
+  }
   .cursor-pointer {
     cursor: pointer;
   }
@@ -514,6 +518,9 @@
   }
   .bg-\[\#f7dfd1\] {
     background-color: #f7dfd1;
+  }
+  .bg-\[\#f7f7f7\] {
+    background-color: #f7f7f7;
   }
   .bg-\[\#fbe4d7\] {
     background-color: #fbe4d7;
@@ -721,6 +728,9 @@
   }
   .text-gray-500 {
     color: var(--color-gray-500);
+  }
+  .text-green-600 {
+    color: var(--color-green-600);
   }
   .text-red-500 {
     color: var(--color-red-500);

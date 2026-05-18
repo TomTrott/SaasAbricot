@@ -73,7 +73,7 @@ export default function Navbar() {
                 : "bg-[#f4e4d9] text-[#222]"
             }`}
           >
-            MA
+            IT
           </Link>
 
           {/* Mobile Button */}
