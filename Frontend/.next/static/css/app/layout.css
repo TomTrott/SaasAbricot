@@ -396,6 +396,9 @@
   .max-w-\[1100px\] {
     max-width: 1100px;
   }
+  .max-w-\[1500px\] {
+    max-width: 1500px;
+  }
   .max-w-\[1700px\] {
     max-width: 1700px;
   }
@@ -690,6 +693,9 @@
   }
   .py-8 {
     padding-block: calc(var(--spacing) * 8);
+  }
+  .py-10 {
+    padding-block: calc(var(--spacing) * 10);
   }
   .py-16 {
     padding-block: calc(var(--spacing) * 16);
@@ -1123,6 +1129,11 @@
       width: 140px;
     }
   }
+  .sm\:w-\[290px\] {
+    @media (width >= 40rem) {
+      width: 290px;
+    }
+  }
   .sm\:w-fit {
     @media (width >= 40rem) {
       width: fit-content;
@@ -1253,6 +1264,11 @@
       width: 64px;
     }
   }
+  .lg\:w-\[140px\] {
+    @media (width >= 64rem) {
+      width: 140px;
+    }
+  }
   .lg\:w-\[150px\] {
     @media (width >= 64rem) {
       width: 150px;
@@ -1261,6 +1277,11 @@
   .lg\:flex-row {
     @media (width >= 64rem) {
       flex-direction: row;
+    }
+  }
+  .lg\:items-center {
+    @media (width >= 64rem) {
+      align-items: center;
     }
   }
   .lg\:items-start {
@@ -1341,6 +1362,11 @@
   .xl\:flex-row {
     @media (width >= 80rem) {
       flex-direction: row;
+    }
+  }
+  .xl\:items-center {
+    @media (width >= 80rem) {
+      align-items: center;
     }
   }
   .xl\:items-start {

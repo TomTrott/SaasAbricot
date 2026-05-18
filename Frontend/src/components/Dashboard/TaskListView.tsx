@@ -1,88 +1,72 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
-import { tasks } from "../../data/mockdata";
+
+import api from "@/services/api";
+
 import TaskCard from "./TaskCard";
+
 import type { Task } from "./types";
 
 export default function TaskListView() {
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const filteredTasks = (
-    tasks as Task[]
-  ).filter((task) =>
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  async function fetchTasks() {
+    try {
+      const response = await api.get(
+        "/dashboard/assigned-tasks"
+      );
+
+      setTasks(
+        response.data.data.tasks || []
+      );
+    } catch (error) {
+      console.error(
+        "Erreur récupération tâches",
+        error
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const filteredTasks = tasks.filter((task) =>
     task.title
       .toLowerCase()
       .includes(search.toLowerCase())
   );
 
+  if (loading) {
+    return (
+      <div className="bg-white border border-[#e7e7e7] rounded-[18px] p-5 sm:p-7 lg:p-10">
+        <p className="text-[#667085]">
+          Chargement des tâches...
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className="
-        bg-white
-        border
-        border-[#e7e7e7]
-        rounded-[18px]
-        p-5
-        sm:p-7
-        lg:p-10
-      "
-    >
-      <div
-        className="
-          flex
-          flex-col
-          xl:flex-row
-          xl:items-start
-          xl:justify-between
-          gap-6
-          mb-8
-        "
-      >
+    <div className="bg-white border border-[#e7e7e7] rounded-[18px] p-5 sm:p-7 lg:p-10">
+      <div className="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-6 mb-8">
         <div>
-          <h2
-            className="
-              text-[24px]
-              sm:text-[26px]
-              lg:text-[30px]
-              font-bold
-              text-[#1f1f1f]
-            "
-          >
+          <h2 className="text-[24px] sm:text-[26px] lg:text-[30px] font-bold text-[#1f1f1f]">
             Mes tâches assignées
           </h2>
 
-          <p
-            className="
-              text-[15px]
-              sm:text-[17px]
-              lg:text-[18px]
-              text-[#8a8f98]
-              mt-1
-            "
-          >
+          <p className="text-[15px] sm:text-[17px] lg:text-[18px] text-[#8a8f98] mt-1">
             Par ordre de priorité
           </p>
         </div>
 
-        <div
-          className="
-            w-full
-            xl:w-[340px]
-            h-[56px]
-            border
-            border-[#e5e5e5]
-            rounded-[12px]
-            px-5
-            flex
-            items-center
-            justify-between
-            transition-all
-            duration-300
-            focus-within:border-[#d45d00]
-            focus-within:shadow-lg
-            bg-white
-          "
-        >
+        <div className="w-full xl:w-[340px] h-[56px] border border-[#e5e5e5] rounded-[12px] px-5 flex items-center justify-between transition-all duration-300 focus-within:border-[#d45d00] focus-within:shadow-lg bg-white">
           <input
             type="text"
             placeholder="Rechercher une tâche"
@@ -90,14 +74,7 @@ export default function TaskListView() {
             onChange={(e) =>
               setSearch(e.target.value)
             }
-            className="
-              w-full
-              outline-none
-              text-[15px]
-              sm:text-[16px]
-              text-[#667085]
-              bg-transparent
-            "
+            className="w-full outline-none text-[15px] sm:text-[16px] text-[#667085] bg-transparent"
           />
 
           <Search
@@ -108,12 +85,18 @@ export default function TaskListView() {
       </div>
 
       <div className="flex flex-col gap-5">
-        {filteredTasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={task}
-          />
-        ))}
+        {filteredTasks.length > 0 ? (
+          filteredTasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+            />
+          ))
+        ) : (
+          <div className="text-center py-10 text-[#8a8f98]">
+            Aucune tâche assignée
+          </div>
+        )}
       </div>
     </div>
   );

@@ -9,15 +9,19 @@ type Props = {
 
 export default function ProjectCard({ project }: Props) {
   const router = useRouter();
-// Calcule progression taches
-  const totalTasks = project?.tasks?.length || 0;
 
-  const tasksCompleted =
-    project?.tasks?.filter(
-      (task: any) =>
-        task.status === "DONE"
-    ).length || 0;
+  // Utilise directement les vraies tâches renvoyées par la route backend
+  const tasks = project.tasks || [];
 
+  // Nombre total de tâches
+  const totalTasks = tasks.length;
+
+  // Nombre de tâches terminées
+  const tasksCompleted = tasks.filter(
+    (task: any) => task.status === "DONE"
+  ).length;
+
+  // Progression
   const progress =
     totalTasks > 0
       ? (tasksCompleted / totalTasks) * 100
@@ -62,12 +66,11 @@ export default function ProjectCard({ project }: Props) {
               width: `${progress}%`,
             }}
             className="h-full bg-[#d45d00] rounded-full transition-all duration-500"
-          ></div>
+          />
         </div>
 
         <p className="text-[13px] text-[#8b8f98]">
-          {tasksCompleted}/{totalTasks} tâches
-          terminées
+          {tasksCompleted}/{totalTasks} tâches terminées
         </p>
       </div>
 
@@ -82,7 +85,7 @@ export default function ProjectCard({ project }: Props) {
         </div>
 
         <div className="flex items-center flex-wrap gap-2">
-          {/* owner */}
+          {/* OWNER */}
           {owner && (
             <>
               <div className="w-[34px] h-[34px] rounded-full bg-[#f5dfd2] flex items-center justify-center text-[12px] text-[#1f1f1f] uppercase">
@@ -96,7 +99,7 @@ export default function ProjectCard({ project }: Props) {
             </>
           )}
 
-          {/* members */}
+          {/* MEMBERS */}
           {project.members.map((member: any) => (
             <div
               key={member.id}
