@@ -22,10 +22,10 @@ export default function TaskCard({ task }: Props) {
       {/*  Affichage du titre, de la description et du statut de la tâche */}
       <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-5">
         <div className="flex-1">
-          <h3 className="text-[18px] sm:text-[20px] font-semibold text-[#1f1f1f] leading-tight">{task.title}</h3>
+          <h3 className="text-[18px] sm:text-[20px] font-semibold text-[#1f1f1f] uppercase leading-tight">{task.title}</h3>
           <p className="text-[14px] sm:text-[16px] text-[#7f8792] mt-2 leading-relaxed">{task.description}</p>
         </div>
-        <div className={`w-fit px-4 py-1 rounded-full text-[13px] sm:text-[14px] font-medium transition-all duration-300 hover:scale-105 ${statusConfig[task.status].className}`}>
+        <div className={`w-fit px-4 py-1 rounded-full text-[13px] sm:text-[16px] font-medium transition-all duration-300 hover:scale-105 ${statusConfig[task.status].className}`}>
           {statusConfig[task.status].label}
         </div>
       </div>
