@@ -13,10 +13,13 @@ export default function CreateProjectModal({
   onClose,
   onProjectCreated,
 }: Props) {
+  // États locaux pour les champs du formulaire, le chargement et les erreurs
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [contributors, setContributors] = useState("");
+  //chargement 
   const [loading, setLoading] = useState(false);
+  //erreur
   const [error, setError] = useState("");
 
   if (!isOpen) return null;
@@ -32,7 +35,7 @@ export default function CreateProjectModal({
         .split(",")
         .map((email) => email.trim())
         .filter((email) => email.length > 0);
-
+      // Appel à l'API pour créer le projet
       await api.post("/projects", {
         name: title,
         description,

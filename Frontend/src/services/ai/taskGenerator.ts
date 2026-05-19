@@ -1,5 +1,3 @@
-// src/services/ai/taskGenerator.ts
-
 interface GeneratedTask {
   title: string;
   description: string;
@@ -14,9 +12,7 @@ export async function generateTasksWithAI(
 ): Promise<TaskGenerationResult> {
   const lowerPrompt = prompt.toLowerCase();
 
-  // =========================
   // APP DE LIVRAISON
-  // =========================
   if (
     lowerPrompt.includes("livraison") ||
     lowerPrompt.includes("delivery")
@@ -62,9 +58,7 @@ export async function generateTasksWithAI(
     };
   }
 
-  // =========================
   // SAAS / GESTION DE PROJET
-  // =========================
   if (
     lowerPrompt.includes("saas") ||
     lowerPrompt.includes("gestion") ||
@@ -111,9 +105,7 @@ export async function generateTasksWithAI(
     };
   }
 
-  // =========================
   // E-COMMERCE
-  // =========================
   if (
     lowerPrompt.includes("ecommerce") ||
     lowerPrompt.includes("e-commerce") ||
@@ -161,9 +153,7 @@ export async function generateTasksWithAI(
     };
   }
 
-  // =========================
   // SITE VITRINE
-  // =========================
   if (
     lowerPrompt.includes("site vitrine") ||
     lowerPrompt.includes("portfolio") ||
@@ -205,9 +195,7 @@ export async function generateTasksWithAI(
     };
   }
 
-  // =========================
   // API REST
-  // =========================
   if (
     lowerPrompt.includes("api") ||
     lowerPrompt.includes("rest")
@@ -253,9 +241,7 @@ export async function generateTasksWithAI(
     };
   }
 
-  // =========================
   // APPLICATION MOBILE
-  // =========================
   if (
     lowerPrompt.includes("mobile") ||
     lowerPrompt.includes("ios") ||
@@ -297,9 +283,7 @@ export async function generateTasksWithAI(
     };
   }
 
-  // =========================
   // BLOG
-  // =========================
   if (
     lowerPrompt.includes("blog") ||
     lowerPrompt.includes("article")
@@ -335,9 +319,7 @@ export async function generateTasksWithAI(
     };
   }
 
-  // =========================
   // FALLBACK
-  // =========================
   return {
     tasks: [
       {

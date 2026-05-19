@@ -8,9 +8,12 @@ import bannerLogin from "@/assets/images/bannierelogin.png";
 import logoAbricot from "@/assets/logoabricot.png";
 // Composant de la page de connexion
 export default function LoginPage() {
+  // Router de Next.js pour la navigation
   const router = useRouter();
+  // États locaux pour les champs du formulaire
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // États pour la gestion des erreurs et du chargement
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -21,6 +24,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      // Envoie une requête de connexion à l'API
       const response = await api.post("/auth/login", { email, password });
       const token = response.data.data.token;
       const user = response.data.data.user;

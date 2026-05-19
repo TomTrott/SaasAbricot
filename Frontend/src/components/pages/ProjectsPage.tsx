@@ -7,8 +7,9 @@ import ProjectGrid from "../Projects/ProjectGrid";
 import CreateProjectModal from "../Projects/CreateProjectModal";
 // Page de gestion des projets
 export default function ProjectsPage() {
+  // État pour gérer l'ouverture du modal de création de projet
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  // Fonction pour rafraîchir la liste des projets après la création d'un nouveau projet
   const refreshProjects = () => {
     window.location.reload();
   };

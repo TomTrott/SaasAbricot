@@ -5,6 +5,7 @@ import api from "../../services/api";
 import ProjectCard from "./ProjectCard";
 // Composant pour afficher une grille de projets avec leurs tâches associées
 export default function ProjectGrid() {
+  // États locaux pour les projets et le chargement
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,12 +13,14 @@ export default function ProjectGrid() {
   const fetchProjects = async () => {
     try {
       setLoading(true);
+      // Appel à l'API pour récupérer les projets
       const response = await api.get("/projects");
 
       // Pour chaque projet, récupère ses tâches
       const projectsWithTasks = await Promise.all(
         response.data.data.projects.map(async (project: any) => {
           try {
+            // Appel à l'API pour récupérer les tâches du projet
             const tasksResponse = await api.get(`/projects/${project.id}/tasks`);
             return { ...project, tasks: tasksResponse.data.data.tasks };
           } catch (error) {

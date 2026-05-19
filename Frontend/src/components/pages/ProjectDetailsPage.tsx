@@ -16,17 +16,18 @@ import EditTaskModal from "../Task/EditTaskModal";
 import TaskCard from "../Task/TaskCard";
 import CreateTaskWithAIModal from "../Task/CreateTaskWithAIModal";
 
-// --- COMPOSANT PRINCIPAL ---
 export default function ProjectDetailsPage() {
-  // --- HOOKS DE ROUTAGE ---
+  // Router et paramètres
   const router = useRouter();
   const params = useParams();
   const projectId = params.id;
 
-  // --- ÉTATS (STATE) ---
+  // états du projet et des tâches
   const [project, setProject] = useState<any>(null);
   const [tasks, setTasks] = useState<any[]>([]);
+  // états d'interface
   const [loading, setLoading] = useState(true);
+  // filtres et modales
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [dateFilter, setDateFilter] = useState("");
@@ -43,7 +44,7 @@ export default function ProjectDetailsPage() {
     if (!projectId) return;
     fetchProject();
   }, [projectId]);
-
+  // fonctions pour récupérer les données du projet et des tâches
   const fetchProject = async () => {
     try {
       setLoading(true);
@@ -59,9 +60,10 @@ export default function ProjectDetailsPage() {
       setLoading(false);
     }
   };
-
+  // fonction pour filtrer les tâches en fonction des critères de recherche et de filtre
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
+      // filtrage par recherche, statut et date d'échéance
       const matchSearch = task.title?.toLowerCase().includes(search.toLowerCase());
       const matchStatus = statusFilter === "ALL" ? true : task.status === statusFilter;
       const matchDate = dateFilter === "" ? true : new Date(task.dueDate).toISOString().split("T")[0] === dateFilter;
@@ -76,7 +78,7 @@ export default function ProjectDetailsPage() {
   if (!project) {
     return <div className="flex min-h-screen items-center justify-center bg-[#f8f8f8]"><div className="text-[16px] text-[#8b8f98]">Projet introuvable</div></div>;
   }
-
+  // fonction pour supprimer le projet
   const handleDeleteProject = async () => {
     const confirmed = window.confirm("Voulez-vous vraiment supprimer ce projet ?");
     if (!confirmed) return;
@@ -87,7 +89,7 @@ export default function ProjectDetailsPage() {
       console.error(error);
     }
   };
-
+  // fonction pour ouvrir la modale d'édition de tâche
   const handleEditTask = (task: any) => {
     setEditingTask(task);
     setIsEditTaskModalOpen(true);

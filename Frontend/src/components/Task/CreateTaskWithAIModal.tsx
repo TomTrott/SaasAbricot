@@ -28,11 +28,17 @@ export default function CreateTaskWithAIModal({
   onTaskCreated,
   members,
 }: CreateTaskWithAIModalProps) {
+  // États locaux
   const [userPrompt, setUserPrompt] = useState("");
+  // Tâches générées par l'IA
   const [generatedTasks, setGeneratedTasks] = useState<Task[]>([]);
+  // Indique si les tâches sont en cours de génération
   const [isGenerating, setIsGenerating] = useState(false);
+  // Étape actuelle : saisie ou revue
   const [step, setStep] = useState<"input" | "review">("input");
+  // Message d'erreur en cas de problème lors de la génération ou création des tâches
   const [error, setError] = useState<string | null>(null);
+  // Tâche actuellement en cours d'édition
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   // Génération IA via API Route Next.js
@@ -43,20 +49,23 @@ export default function CreateTaskWithAIModal({
     setError(null);
 
     try {
+      // Appel à l'API pour générer les tâches
       const response = await fetch("/api/generate-tasks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        // Envoyer le prompt de l'utilisateur dans le corps de la requête
         body: JSON.stringify({ prompt: userPrompt }),
       });
 
       if (!response.ok) {
+        // En cas d'erreur, récupérer le message d'erreur depuis la réponse
         const errorData = await response.json();
         console.error(errorData);
         throw new Error(errorData.error || "Échec de la génération des tâches");
       }
-
+// Récupération des tâches générées
       const { tasks } = await response.json();
 
       // Ajout d'un ID unique à chaque tâche
@@ -83,6 +92,7 @@ export default function CreateTaskWithAIModal({
   // Création d'une tâche
   const handleCreateTask = async (task: Task) => {
     try {
+      // Appel à l'API pour créer la tâche dans le projet
       await api.post(`/projects/${projectId}/tasks`, {
         title: task.title,
         description: task.description,

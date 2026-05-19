@@ -8,15 +8,22 @@ type Props = {
 };
 // affiche une carte pour un projet
 export default function ProjectCard({ project }: Props) {
+  // Hook pour la navigation
   const router = useRouter();
+  // Calcul de la progression du projet
   const tasks = project.tasks || [];
+  // Calcul du pourcentage de tâches terminées
   const totalTasks = tasks.length;
+  // Calcul du nombre de tâches terminées
   const tasksCompleted = tasks.filter((task: any) => task.status === "DONE").length;
   const progress = totalTasks > 0 ? (tasksCompleted / totalTasks) * 100 : 0;
+  // Récupération du propriétaire du projet
   const owner = project.owner;
 
   return (
-    <div onClick={() => router.push(`/projects/${project.id}`)} className="bg-white border border-[#e7e7e7] rounded-[18px] p-6 sm:p-7 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer">
+    // Redirige vers la page du projet au clic sur la carte
+    <div onClick={() => router.push(`/projects/${project.id}`)} 
+    className="bg-white border border-[#e7e7e7] rounded-[18px] p-6 sm:p-7 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer">
       <div className="mb-10">
         <h2 className="text-[22px] font-semibold uppercase text-[#1f1f1f] mb-3">{project.name}</h2>
         <p className="text-[15px] leading-relaxed text-[#8b8f98]">{project.description || "Aucune description"}</p>

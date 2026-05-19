@@ -22,6 +22,7 @@ export default function EditProjectModal({
   onProjectUpdated,
   project,
 }: Props) {
+  // États locaux pour les champs du formulaire, le chargement et les erreurs
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [contributors, setContributors] = useState("");

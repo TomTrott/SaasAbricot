@@ -22,13 +22,19 @@ export default function EditTaskModal({
   task,
   onTaskUpdated,
 }: Props) {
+  // Permet de détecter les clics en dehors de la modale pour la fermer
   const modalRef = useRef<HTMLDivElement>(null);
-
+// États pour les champs du formulaire
   const [title, setTitle] = useState("");
+  // Utilise une chaîne vide par défaut pour éviter les problèmes de champ contrôlé
   const [description, setDescription] = useState("");
+  // Convertit date de la tâche en format YYYY-MM-DD
   const [dueDate, setDueDate] = useState("");
+  // statut tâche par défaut
   const [status, setStatus] = useState("TODO");
+  // Stocke les IDs des collaborateurs assignés à la tâche
   const [assigneeIds, setAssigneeIds] = useState<string[]>([]);
+  //chargement
   const [loading, setLoading] = useState(false);
 
   // Initialise les champs avec les données de la tâche

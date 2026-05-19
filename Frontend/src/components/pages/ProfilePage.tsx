@@ -12,26 +12,31 @@ type User = {
 };
 // Page de profil utilisateur
 export default function ProfilePage() {
+  // définit les états pour les données utilisateur
   const [user, setUser] = useState<User | null>(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  // États pour la gestion du chargement
   const [loading, setLoading] = useState(true);
+  // États pour la gestion de l'édition et des messages
   const [saving, setSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [message, setMessage] = useState("");
+  // État pour les erreurs
   const [error, setError] = useState("");
 
   // Charge le profil utilisateur au montage
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        // Récupère les données du profil
         const response = await api.get("/auth/profile");
         const profileUser = response.data.data.user;
         setUser(profileUser);
-
+        // Sépare le nom complet en prénom et nom de famille
         const fullName = profileUser.name || "";
         const nameParts = fullName.split(" ");
         setFirstName(nameParts[0] || "");
@@ -60,7 +65,7 @@ export default function ProfilePage() {
       setSaving(true);
       setError("");
       setMessage("");
-
+      // Concatène le prénom et le nom pour former le nom complet
       const fullName = `${firstName} ${lastName}`.trim();
 
       // Met à jour le profil

@@ -3,10 +3,11 @@ import { generateTasksWithAI } from "@/services/ai/taskGenerator";
 
 export async function POST(req: Request) {
   try {
+    // Récupérer les données du corps de la requête
     const body = await req.json();
 
     console.log("BODY :", body);
-
+    // Appeler la fonction pour générer les tâches avec l'IA
     const result = await generateTasksWithAI(body.prompt);
 
     console.log("RESULT :", result);

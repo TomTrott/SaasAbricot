@@ -8,10 +8,14 @@ import bannerRegister from "@/assets/images/banniereregister.png";
 import logoAbricot from "@/assets/logoabricot.png";
 // Page d'inscription
 export default function RegisterPage() {
+  // Initialisation des états pour les champs du formulaire, les erreurs et le chargement
   const router = useRouter();
+  //formulaires
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  //ereurs
   const [error, setError] = useState("");
+  //chargement
   const [loading, setLoading] = useState(false);
 
   // Gère l'inscription de l'utilisateur
@@ -19,12 +23,14 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+// Envoie une requête POST à l'API pour enregistrer l'utilisateur
     try {
       await api.post("/auth/register", { email, password });
       router.push("/login");
+      // Affiche une notification de succès (à implémenter)
     } catch (error) {
       console.error(error);
+      // Affiche une notification d'erreur (à implémenter)
       setError("Une erreur est survenue lors de l'inscription.");
     } finally {
       setLoading(false);

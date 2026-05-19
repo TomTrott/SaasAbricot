@@ -2,20 +2,8 @@
 
 // React et hooks
 import { useEffect, useState } from "react";
-
 // Icônes
-import {
-  Calendar,
-  MoreHorizontal,
-  MessageSquare,
-  ChevronDown,
-  ChevronUp,
-  Send,
-  Trash2,
-  Pencil,
-  X,
-} from "lucide-react";
-
+import { Calendar, MoreHorizontal, MessageSquare, ChevronDown, ChevronUp, Send, Trash2, Pencil, X, } from "lucide-react";
 // Service API
 import api from "@/services/api";
 
@@ -78,8 +66,11 @@ export default function TaskCard({
 }: TaskCardProps) {
   // États commentaires
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+  // Commentaires de la tâche
   const [comments, setComments] = useState<Comment[]>([]);
+  // Nouveau commentaire
   const [commentInput, setCommentInput] = useState("");
+  // Indicateur de chargement pour les actions sur les commentaires
   const [loadingComment, setLoadingComment] = useState(false);
 
   // États édition commentaire

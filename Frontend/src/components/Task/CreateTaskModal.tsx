@@ -22,10 +22,15 @@ export default function CreateTaskModal({
 }: Props) {
     // États pour les champs du formulaire
     const [title, setTitle] = useState("");
+    // Description de la tâche
     const [description, setDescription] = useState("");
+    // Échéance au format ISO (YYYY-MM-DD)
     const [dueDate, setDueDate] = useState("");
+    // Statut par défaut à "TODO"
     const [status, setStatus] = useState("TODO");
+    // Tableau pour stocker les IDs des membres assignés à la tâche
     const [assigneeIds, setAssigneeIds] = useState<string[]>([]);
+    //chargement lors de la création de la tâche
     const [loading, setLoading] = useState(false);
 
     if (!isOpen) return null;
