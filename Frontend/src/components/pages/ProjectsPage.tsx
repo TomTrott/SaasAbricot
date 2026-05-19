@@ -5,7 +5,7 @@ import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import ProjectGrid from "../Projects/ProjectGrid";
 import CreateProjectModal from "../Projects/CreateProjectModal";
-
+// Page de gestion des projets
 export default function ProjectsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
