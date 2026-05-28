@@ -36,19 +36,7 @@ Installer les dépendances
 npm install
 Configuration des variables d’environnement
 
-Créer un fichier :
 
-.env
-
-Exemple :
-
-PORT=8000
-
-DATABASE_URL="postgresql://postgres:password@localhost:5432/project_manager"
-
-JWT_SECRET="votre_secret_jwt"
-
-NODE_ENV=development
 Prisma
 Générer Prisma Client
 npx prisma generate
