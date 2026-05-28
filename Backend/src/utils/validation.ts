@@ -222,11 +222,15 @@ export const validateCreateProjectData = (data: {
         message: "Les contributeurs doivent être un tableau",
       });
     } else {
-      data.contributors.forEach((email, index) => {
-        if (!isValidEmail(email)) {
+      data.contributors.forEach((id, index) => {
+        if (
+          typeof id !== "string" ||
+          id.trim().length === 0
+        ) {
           errors.push({
             field: `contributors[${index}]`,
-            message: "Format d'email invalide",
+            message:
+              "Identifiant utilisateur invalide",
           });
         }
       });

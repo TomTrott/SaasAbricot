@@ -9,7 +9,10 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes";
 import projectRoutes from "./routes/projectRoutes";
 import dashboardRoutes from "./routes/dashboardRoutes";
-import { searchUsers } from "./controllers/projectController";
+import {
+  searchUsers,
+  getUsers,
+} from "./controllers/projectController";
 
 // Middleware
 import { authenticateToken } from "./middleware/auth";
@@ -71,6 +74,7 @@ app.use("/dashboard", dashboardRoutes);
 
 // Route pour la recherche d'utilisateurs
 app.get("/users/search", authenticateToken, searchUsers);
+app.get("/users", authenticateToken, getUsers);
 
 // Route de santé
 app.get("/health", (req, res) => {

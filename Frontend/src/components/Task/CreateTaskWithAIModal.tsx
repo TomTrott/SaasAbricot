@@ -235,7 +235,8 @@ export default function CreateTaskWithAIModal({
                 {/* Liste des tâches */}
                 <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar min-h-0">
                   <div className="space-y-3 pb-4">
-                    {generatedTasks.map((task) => (
+                    {/* Affichage des tâches générées avec options de modification et suppression */}
+                    {generatedTasks.map((task) => ( 
                       <div
                         key={task.id}
                         className="rounded-[14px] border border-[#ececec] bg-white px-5 py-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"

@@ -18,9 +18,10 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   // Gère la connexion de l'utilisateur
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => { // Empêche le comportement par défaut du formulaire
     e.preventDefault();
     setError("");
+    // Indique que la connexion est en cours
     setLoading(true);
 
     try {
