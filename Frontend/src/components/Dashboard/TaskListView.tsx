@@ -41,23 +41,40 @@ export default function TaskListView() {
       <div className="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-6 mb-8">
         <div>
           <h2 className="text-[24px] sm:text-[26px] lg:text-[30px] font-bold text-[#1f1f1f]">Mes tâches assignées</h2>
-          <p className="text-[15px] sm:text-[17px] lg:text-[18px] text-[#8a8f98] mt-1">Par ordre de priorité</p>
+          <p className="mt-1 text-[15px] sm:text-[17px] lg:text-[18px] text-[#5f6670]">
+            Par ordre de priorité
+          </p>
         </div>
         <div className="w-full xl:w-[340px] h-[56px] border border-[#e5e5e5] rounded-[12px] px-5 flex items-center justify-between transition-all duration-300 focus-within:border-[#d45d00] focus-within:shadow-lg bg-white">
-          <input type="text" placeholder="Rechercher une tâche" 
-          value={search} 
-          onChange={(e) => setSearch(e.target.value)} 
-          className="w-full outline-none text-[15px] sm:text-[16px] text-[#667085] bg-transparent" />
-          <Search size={18} 
-          className="text-[#667085]" />
+
+          <label htmlFor="search-task" className="sr-only">
+            Rechercher une tâche
+          </label>
+
+          <input
+            id="search-task"
+            type="text"
+            placeholder="Rechercher une tâche"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-transparent text-[15px] sm:text-[16px] text-[#667085] outline-none"
+          />
+
+          <Search
+            size={18}
+            className="text-[#667085]"
+            aria-hidden="true"
+          />
         </div>
       </div>
       <div className="flex flex-col gap-5">
         {filteredTasks.length > 0 ? (
-          filteredTasks.map((task) => 
-          <TaskCard key={task.id} task={task} />)
+          filteredTasks.map((task) =>
+            <TaskCard key={task.id} task={task} />)
         ) : (
-          <div className="text-center py-10 text-[#8a8f98]">Aucune tâche assignée</div>
+          <div className="py-10 text-center text-[#5f6670]">
+            Aucune tâche assignée
+          </div>
         )}
       </div>
     </div>

@@ -22,26 +22,26 @@ export default function ProjectCard({ project }: Props) {
 
   return (
     // Redirige vers la page du projet au clic sur la carte
-    <div onClick={() => router.push(`/projects/${project.id}`)} 
-    className="bg-white border border-[#e7e7e7] rounded-[18px] p-6 sm:p-7 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer">
+    <div onClick={() => router.push(`/projects/${project.id}`)}
+      className="bg-white border border-[#e7e7e7] rounded-[18px] p-6 sm:p-7 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer">
       <div className="mb-10">
         <h2 className="text-[22px] font-semibold uppercase text-[#1f1f1f] mb-3">{project.name}</h2>
-        <p className="text-[15px] leading-relaxed text-[#8b8f98]">{project.description || "Aucune description"}</p>
+        <p className="text-[15px] leading-relaxed text-[#5f6670]">{project.description || "Aucune description"}</p>
       </div>
       {/* affiche la progression du projet */}
       <div className="mb-10">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[14px] text-[#8b8f98]">Progression</span>
+          <span className="text-[14px] text-[#5f6670]">Progression</span>
           <span className="text-[14px] text-[#1f1f1f] font-medium">{Math.round(progress)}%</span>
         </div>
         <div className="w-full h-[8px] bg-[#ececf1] rounded-full overflow-hidden mb-3">
           <div style={{ width: `${progress}%` }} className="h-full bg-[#d45d00] rounded-full transition-all duration-500" />
         </div>
-        <p className="text-[13px] text-[#8b8f98]">{tasksCompleted}/{totalTasks} tâches terminées</p>
+        <p className="text-[13px] text-[#5f6670]">{tasksCompleted}/{totalTasks} tâches terminées</p>
       </div>
       {/* affiche les membres du projet */}
       <div>
-        <div className="flex items-center gap-2 text-[#8b8f98] text-[14px] mb-4">
+        <div className="flex items-center gap-2 text-[#5f6670] text-[14px] mb-4">
           <Users size={15} />
           <span>Équipe ({1 + project.members.length})</span>
         </div>
@@ -51,7 +51,7 @@ export default function ProjectCard({ project }: Props) {
               <div className="w-[34px] h-[34px] rounded-full bg-[#f5dfd2] flex items-center justify-center text-[12px] text-[#1f1f1f] uppercase">
                 {owner?.name?.[0] || owner?.email?.[0]}
               </div>
-              <div className="h-[34px] px-4 rounded-full bg-[#fbe4d7] flex items-center justify-center text-[14px] text-[#d45d00] font-medium">
+              <div className="h-[34px] px-4 rounded-full bg-[#fbe4d7] flex items-center justify-center text-[14px] text-[#8a3200] font-semibold">
                 Propriétaire
               </div>
             </>

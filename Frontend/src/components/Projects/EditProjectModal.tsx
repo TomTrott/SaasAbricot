@@ -171,15 +171,18 @@ export default function EditProjectModal({
           );
         }
       }
+
       onClose();
+
       if (onProjectUpdated) {
         onProjectUpdated();
       }
     } catch (err: any) {
       console.error(err);
+
       setError(
         err?.response?.data?.message ||
-        "Erreur lors de la modification du projet"
+          "Erreur lors de la modification du projet"
       );
     } finally {
       setLoading(false);
@@ -187,51 +190,69 @@ export default function EditProjectModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="edit-project-title"
+    >
       <div className="relative w-full max-w-[520px] rounded-[16px] bg-white p-8 shadow-2xl">
         {/* bouton fermer */}
         <button
+          type="button"
           onClick={onClose}
-          className="absolute right-6 top-6 text-2xl text-gray-400 transition-all hover:text-black"
+          aria-label="Fermer la fenêtre"
+          className="absolute right-6 top-6 flex h-[40px] w-[40px] items-center justify-center rounded-full text-[24px] text-[#4b5563] transition-all hover:bg-[#f3f4f6] hover:text-black focus:outline-none focus-visible:ring-4 focus-visible:ring-[#d45d00]/30"
         >
           ×
         </button>
 
         {/* titre */}
-        <h2 className="mb-10 text-[26px] text-[#1f1f1f]">
+        <h2
+          id="edit-project-title"
+          className="mb-10 text-[26px] font-semibold text-[#1f1f1f]"
+        >
           Modifier le projet
         </h2>
 
         <div className="space-y-6">
           {/* titre */}
           <div>
-            <label className="mb-2 block text-sm text-[#1f1f1f]">
+            <label
+              htmlFor="project-title"
+              className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+            >
               Titre*
             </label>
 
             <input
+              id="project-title"
               type="text"
               value={title}
               onChange={(e) =>
                 setTitle(e.target.value)
               }
-              className="h-[54px] w-full rounded-[10px] border border-gray-200 px-4 outline-none transition-all focus:border-black"
+              className="h-[54px] w-full rounded-[10px] border border-[#d1d5db] bg-white px-4 text-[15px] text-[#1f1f1f] outline-none transition-all placeholder:text-[#6b7280] focus:border-[#d45d00] focus:ring-4 focus:ring-[#d45d00]/20"
             />
           </div>
 
           {/* description */}
           <div>
-            <label className="mb-2 block text-sm text-[#1f1f1f]">
+            <label
+              htmlFor="project-description"
+              className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+            >
               Description*
             </label>
 
             <textarea
+              id="project-description"
               value={description}
               onChange={(e) =>
                 setDescription(e.target.value)
               }
               rows={4}
-              className="w-full rounded-[10px] border border-gray-200 px-4 py-3 outline-none transition-all focus:border-black"
+              className="w-full rounded-[10px] border border-[#d1d5db] bg-white px-4 py-3 text-[15px] text-[#1f1f1f] outline-none transition-all placeholder:text-[#6b7280] focus:border-[#d45d00] focus:ring-4 focus:ring-[#d45d00]/20"
             />
           </div>
 
@@ -240,35 +261,43 @@ export default function EditProjectModal({
             ref={dropdownRef}
             className="relative"
           >
-            <label className="mb-2 block text-sm text-[#1f1f1f]">
+            <label
+              htmlFor="contributors-button"
+              className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+            >
               Contributeurs
             </label>
 
             {/* bouton dropdown */}
             <button
+              id="contributors-button"
               type="button"
+              aria-haspopup="listbox"
+              aria-expanded={dropdownOpen}
               onClick={() =>
                 setDropdownOpen(!dropdownOpen)
               }
-              className="flex h-[54px] w-full items-center justify-between rounded-[10px] border border-gray-200 px-4"
+              className="flex min-h-[54px] w-full items-center justify-between rounded-[10px] border border-[#d1d5db] bg-white px-4 text-left text-[#1f1f1f] transition-all hover:border-[#9ca3af] focus:outline-none focus:ring-4 focus:ring-[#d45d00]/20"
             >
-              <span className="truncate text-left text-sm">
+              <span className="truncate text-[15px] text-[#1f1f1f]">
                 {selectedUsers.length > 0
                   ? selectedUsers
-                    .map((u) => u.name)
-                    .join(", ")
+                      .map((u) => u.name)
+                      .join(", ")
                   : "Choisir un ou plusieurs collaborateurs"}
               </span>
 
               {/* flèche */}
               <svg
-                className={`h-5 w-5 transition-transform ${dropdownOpen
-                  ? "rotate-180"
-                  : ""
-                  }`}
+                className={`h-5 w-5 flex-shrink-0 text-[#4b5563] transition-transform ${
+                  dropdownOpen
+                    ? "rotate-180"
+                    : ""
+                }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -281,7 +310,10 @@ export default function EditProjectModal({
 
             {/* menu dropdown */}
             {dropdownOpen && (
-              <div className="absolute z-50 mt-2 max-h-60 w-full overflow-y-auto rounded-[8px] border border-gray-200 bg-white shadow-lg">
+              <div
+                role="listbox"
+                className="absolute z-50 mt-2 max-h-60 w-full overflow-y-auto rounded-[10px] border border-[#d1d5db] bg-white shadow-lg"
+              >
                 {Array.isArray(users) &&
                   users.map((user) => {
                     const checked =
@@ -292,22 +324,25 @@ export default function EditProjectModal({
                     return (
                       <label
                         key={user.id}
-                        className="flex cursor-pointer items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                        htmlFor={`user-${user.id}`}
+                        className="flex cursor-pointer items-center gap-3 px-4 py-3 transition-all hover:bg-[#f9fafb]"
                       >
                         <input
+                          id={`user-${user.id}`}
                           type="checkbox"
                           checked={checked}
                           onChange={() =>
                             toggleUser(user)
                           }
+                          className="h-4 w-4 rounded border-[#9ca3af] text-[#d45d00] focus:ring-[#d45d00]"
                         />
 
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium">
+                          <span className="text-[14px] font-medium text-[#1f1f1f]">
                             {user.name}
                           </span>
 
-                          <span className="text-xs text-gray-400">
+                          <span className="text-[13px] text-[#4b5563]">
                             {user.email}
                           </span>
                         </div>
@@ -320,20 +355,24 @@ export default function EditProjectModal({
 
           {/* erreur */}
           {error && (
-            <div className="text-sm text-red-500">
+            <div
+              role="alert"
+              className="text-[14px] font-medium text-red-600"
+            >
               {error}
             </div>
           )}
 
           {/* bouton */}
           <button
+            type="button"
             onClick={handleSubmit}
             disabled={
               loading ||
               !title ||
               !description
             }
-            className="mt-4 h-[54px] rounded-[14px] bg-[#1f1f23] px-7 text-[17px] text-white transition-all duration-300 hover:bg-black disabled:opacity-50"
+            className="mt-4 h-[54px] rounded-[14px] bg-[#1f1f23] px-7 text-[16px] font-medium text-white transition-all duration-300 hover:bg-black hover:shadow-lg focus:outline-none focus-visible:ring-4 focus-visible:ring-black/20 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading
               ? "Modification..."

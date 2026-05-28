@@ -4,39 +4,44 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Layout/Navbar";
 import Footer from "@/components/Layout/Footer";
 import api from "@/services/api";
+
 // Type pour l'utilisateur
 type User = {
   id: string;
   email: string;
   name: string | null;
 };
+
 // Page de profil utilisateur
 export default function ProfilePage() {
-  // définit les états pour les données utilisateur
+  // États utilisateur
   const [user, setUser] = useState<User | null>(null);
+  // États formulaire
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  // États mot de passe
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  // États pour la gestion du chargement
+  // États UI
   const [loading, setLoading] = useState(true);
-  // États pour la gestion de l'édition et des messages
   const [saving, setSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  // États messages
   const [message, setMessage] = useState("");
-  // État pour les erreurs
   const [error, setError] = useState("");
 
-  // Charge le profil utilisateur au montage
+  // Chargement du profil utilisateur
   useEffect(() => {
     const fetchProfile = async () => {
+
       try {
-        // Récupère les données du profil
         const response = await api.get("/auth/profile");
         const profileUser = response.data.data.user;
+
         setUser(profileUser);
-        // Sépare le nom complet en prénom et nom de famille
+
+        // Découpe prénom / nom
         const fullName = profileUser.name || "";
         const nameParts = fullName.split(" ");
         setFirstName(nameParts[0] || "");
@@ -46,16 +51,17 @@ export default function ProfilePage() {
         console.error(error);
       } finally {
         setLoading(false);
+
       }
     };
     fetchProfile();
   }, []);
 
-  // Gère la soumission du formulaire
+  // Soumission formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Premier clic active le mode édition
+    // Active le mode édition
     if (!isEditing) {
       setIsEditing(true);
       return;
@@ -65,20 +71,31 @@ export default function ProfilePage() {
       setSaving(true);
       setError("");
       setMessage("");
-      // Concatène le prénom et le nom pour former le nom complet
+
+      // Nom complet
       const fullName = `${firstName} ${lastName}`.trim();
 
-      // Met à jour le profil
-      await api.put("/auth/profile", { name: fullName, email });
+      // Mise à jour profil
+      await api.put("/auth/profile", {
+        name: fullName,
+        email,
+      });
 
-      // Met à jour le mot de passe si les champs sont remplis
+      // Mise à jour mot de passe
       if (currentPassword || newPassword) {
+
         if (!currentPassword || !newPassword) {
-          setError("Veuillez remplir l'ancien et le nouveau mot de passe");
+          setError(
+            "Veuillez remplir l'ancien et le nouveau mot de passe"
+          );
           setSaving(false);
           return;
         }
-        await api.put("/auth/password", { currentPassword, newPassword });
+
+        await api.put("/auth/password", {
+          currentPassword,
+          newPassword,
+        });
         setCurrentPassword("");
         setNewPassword("");
       }
@@ -87,69 +104,206 @@ export default function ProfilePage() {
       setIsEditing(false);
     } catch (err: any) {
       console.error(err);
-      setError(err?.response?.data?.message || "Erreur lors de la mise à jour");
+      setError(
+        err?.response?.data?.message ||
+        "Erreur lors de la mise à jour"
+      );
     } finally {
       setSaving(false);
+
     }
   };
 
+  // Chargement
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5]"><p className="text-[#1f1f1f] text-[18px]">Chargement...</p></div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#f5f5f5]">
+        <p className="text-[18px] text-[#1f1f1f]">
+          Chargement...
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f5f5f5]">
+
+    <div className="flex min-h-screen flex-col bg-[#f5f5f5]">
       <Navbar />
-      {/* Contenu principal de la page de profil */}
-      <main className="flex-1 px-4 sm:px-6 lg:px-10 py-6 lg:py-8">
-        {/* Conteneur du formulaire de profil */}
-        <div className="max-w-[1100px] mx-auto bg-white border border-[#e7e7e7] rounded-[18px] p-6 sm:p-8 lg:p-10">
+      {/* Contenu principal */}
+      <main
+        className="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-8"
+        aria-labelledby="profile-title"
+      >
+
+        {/* Carte profil */}
+        <div className="mx-auto max-w-[1100px] rounded-[18px] border border-[#e7e7e7] bg-white p-6 sm:p-8 lg:p-10">
+          {/* Header */}
           <div className="mb-8">
-            <h1 className="text-[28px] font-semibold text-[#1f1f1f]">Mon compte</h1>
-            <p className="text-[#8b8f98] text-[17px] mt-1">{user?.name}</p>
+            <h1
+              id="profile-title"
+              className="text-[28px] font-semibold text-[#1f1f1f]"
+            >
+              Mon compte
+            </h1>
+            <p className="mt-1 text-[17px] text-[#4b5563]">
+              {user?.name}
+            </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          {/* Formulaire */}
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-6"
+          >
+
+            {/* Nom */}
             <div>
-              <label className="block text-[15px] text-[#1f1f1f] mb-2">Nom</label>
-              <input type="text" value={lastName} disabled={!isEditing}
+              <label
+                htmlFor="lastName"
+                className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+              >
+                Nom
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                value={lastName}
+                disabled={!isEditing}
                 onChange={(e) => setLastName(e.target.value)}
-                className={`w-full h-[58px] border rounded-[10px] px-4 outline-none text-[15px] transition-all ${isEditing ? "border-[#e5e5e5] bg-white text-[#1f1f1f] focus:border-[#d45d00]" : "border-[#ececec] bg-[#f7f7f7] text-[#8b8f98] cursor-not-allowed"}`} />
+                className={`h-[58px] w-full rounded-[10px] border px-4 text-[15px] outline-none transition-all ${isEditing
+                    ? "border-[#d6d6d6] bg-white text-[#1f1f1f] focus:border-[#d45d00] focus:ring-2 focus:ring-[#d45d00]/20"
+                    : "cursor-not-allowed border-[#ececec] bg-[#f7f7f7] text-[#5f6673]"
+                  }`}
+              />
             </div>
 
+            {/* Prénom */}
             <div>
-              <label className="block text-[15px] text-[#1f1f1f] mb-2">Prénom</label>
-              <input type="text" value={firstName} disabled={!isEditing}
-                onChange={(e) => setFirstName(e.target.value)} className={`w-full h-[58px] border rounded-[10px] px-4 outline-none text-[15px] transition-all ${isEditing ? "border-[#e5e5e5] bg-white text-[#1f1f1f] focus:border-[#d45d00]" : "border-[#ececec] bg-[#f7f7f7] text-[#8b8f98] cursor-not-allowed"}`} />
+              <label
+                htmlFor="firstName"
+                className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+              >
+                Prénom
+              </label>
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                value={firstName}
+                disabled={!isEditing}
+                onChange={(e) => setFirstName(e.target.value)}
+                className={`h-[58px] w-full rounded-[10px] border px-4 text-[15px] outline-none transition-all ${isEditing
+                    ? "border-[#d6d6d6] bg-white text-[#1f1f1f] focus:border-[#d45d00] focus:ring-2 focus:ring-[#d45d00]/20"
+                    : "cursor-not-allowed border-[#ececec] bg-[#f7f7f7] text-[#5f6673]"
+                  }`}
+              />
             </div>
 
+            {/* Email */}
             <div>
-              <label className="block text-[15px] text-[#1f1f1f] mb-2">Email</label>
-              <input type="email" value={email} disabled={!isEditing}
+              <label
+                htmlFor="email"
+                className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                value={email}
+                disabled={!isEditing}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`w-full h-[58px] border rounded-[10px] px-4 outline-none text-[15px] transition-all ${isEditing ? "border-[#e5e5e5] bg-white text-[#1f1f1f] focus:border-[#d45d00]" : "border-[#ececec] bg-[#f7f7f7] text-[#8b8f98] cursor-not-allowed"}`} />
+                className={`h-[58px] w-full rounded-[10px] border px-4 text-[15px] outline-none transition-all ${isEditing
+                    ? "border-[#d6d6d6] bg-white text-[#1f1f1f] focus:border-[#d45d00] focus:ring-2 focus:ring-[#d45d00]/20"
+                    : "cursor-not-allowed border-[#ececec] bg-[#f7f7f7] text-[#5f6673]"
+                  }`}
+              />
             </div>
 
+            {/* Mot de passe actuel */}
             <div>
-              <label className="block text-[15px] text-[#1f1f1f] mb-2">Mot de passe actuel</label>
-              <input type="password" value={currentPassword} disabled={!isEditing}
-                onChange={(e) => setCurrentPassword(e.target.value)} placeholder="••••••••" className={`w-full h-[58px] border rounded-[10px] px-4 outline-none text-[15px] transition-all ${isEditing ? "border-[#e5e5e5] bg-white text-[#1f1f1f] focus:border-[#d45d00]" : "border-[#ececec] bg-[#f7f7f7] text-[#8b8f98] cursor-not-allowed"}`} />
+              <label
+                htmlFor="currentPassword"
+                className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+              >
+                Mot de passe actuel
+              </label>
+              <input
+                id="currentPassword"
+                name="currentPassword"
+                type="password"
+                autoComplete="current-password"
+                value={currentPassword}
+                disabled={!isEditing}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="••••••••"
+                className={`h-[58px] w-full rounded-[10px] border px-4 text-[15px] outline-none transition-all ${isEditing
+                    ? "border-[#d6d6d6] bg-white text-[#1f1f1f] focus:border-[#d45d00] focus:ring-2 focus:ring-[#d45d00]/20"
+                    : "cursor-not-allowed border-[#ececec] bg-[#f7f7f7] text-[#5f6673]"
+                  }`}
+              />
             </div>
 
+            {/* Nouveau mot de passe */}
             {isEditing && (
               <div>
-                <label className="block text-[15px] text-[#1f1f1f] mb-2">Nouveau mot de passe</label>
-                <input type="password" value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)} placeholder="••••••••"
-                  className="w-full h-[58px] border border-[#e5e5e5] rounded-[10px] px-4 outline-none text-[15px] bg-white text-[#1f1f1f] focus:border-[#d45d00]" />
+                <label
+                  htmlFor="newPassword"
+                  className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+                >
+                  Nouveau mot de passe
+                </label>
+                <input
+                  id="newPassword"
+                  name="newPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="h-[58px] w-full rounded-[10px] border border-[#d6d6d6] bg-white px-4 text-[15px] text-[#1f1f1f] outline-none transition-all focus:border-[#d45d00] focus:ring-2 focus:ring-[#d45d00]/20"
+                />
               </div>
+
             )}
+            {/* Message succès */}
+            {message && (
+              <div
+                role="status"
+                aria-live="polite"
+                className="text-sm font-medium text-green-700"
+              >
+                {message}
+              </div>
 
-            {message && <div className="text-green-600 text-sm">{message}</div>}
-            {error && <div className="text-red-500 text-sm">{error}</div>}
+            )}
+            {/* Message erreur */}
+            {error && (
 
-            <button type="submit" disabled={saving} className="mt-2 w-fit h-[54px] px-7 rounded-[12px] bg-[#1f1f1f] text-white text-[16px] font-medium transition-all duration-300 hover:bg-black hover:scale-[1.02] hover:shadow-lg disabled:opacity-50">
-              {saving ? "Enregistrement..." : isEditing ? "Enregistrer" : "Modifier les informations"}
+              <div
+                role="alert"
+                aria-live="assertive"
+                className="text-sm font-medium text-red-700"
+              >
+                {error}
+              </div>
+
+            )}
+            {/* Bouton */}
+            <button
+              type="submit"
+              disabled={saving}
+              aria-busy={saving}
+              className="mt-2 h-[54px] w-fit rounded-[12px] bg-[#1f1f1f] px-7 text-[16px] font-medium text-white transition-all duration-300 hover:scale-[1.02] hover:bg-black hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2 disabled:opacity-50"
+            >
+              {saving
+                ? "Enregistrement..."
+                : isEditing
+                  ? "Enregistrer"
+                  : "Modifier les informations"}
             </button>
           </form>
         </div>

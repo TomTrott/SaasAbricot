@@ -3,52 +3,110 @@
 import { FolderClosed, Calendar, MessageSquareText } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { Task } from "./types";
+
 // props pour taches
 type Props = {
   task: Task;
 };
+
 // Configuration pour les statuts des tâches
 const statusConfig = {
-  TODO: { label: "À faire", className: "bg-[#ffe1e1] text-[#ff4d4d]" },
-  IN_PROGRESS: { label: "En cours", className: "bg-[#ffe8c7] text-[#e28b00]" },
-  DONE: { label: "Terminée", className: "bg-[#ddf8e7] text-[#1ca64c]" },
+  TODO: {
+    label: "À faire",
+    className: "bg-[#ffe1e1] text-[#c62828]",
+  },
+  IN_PROGRESS: {
+    label: "En cours",
+    className: "bg-[#ffe8c7] text-[#a85a00]",
+  },
+  DONE: {
+    label: "Terminée",
+    className: "bg-[#ddf8e7] text-[#147a38]",
+  },
 };
 
 export default function TaskCard({ task }: Props) {
   const router = useRouter();
 
   return (
-    <div className="border border-[#e7e7e7] rounded-[16px] p-5 sm:p-6 lg:p-8 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-[#d9d9d9]">
-      {/*  Affichage du titre, de la description et du statut de la tâche */}
-      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-5">
+    <div className="rounded-[16px] border border-[#dcdcdc] bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#cfcfcf] hover:shadow-2xl sm:p-6 lg:p-8">
+
+      {/* Affichage du titre, de la description et du statut de la tâche */}
+      <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="flex-1">
-          <h3 className="text-[18px] sm:text-[20px] font-semibold text-[#1f1f1f] uppercase leading-tight">{task.title}</h3>
-          <p className="text-[14px] sm:text-[16px] text-[#7f8792] mt-2 leading-relaxed">{task.description}</p>
+          <h3 className="text-[18px] font-semibold uppercase leading-tight text-[#1f1f1f] sm:text-[20px]">
+            {task.title}
+          </h3>
+
+          <p className="mt-2 text-[14px] leading-relaxed text-[#5f6673] sm:text-[16px]">
+            {task.description || "Aucune description"}
+          </p>
         </div>
-        <div className={`w-fit px-4 py-1 rounded-full text-[13px] sm:text-[16px] font-medium transition-all duration-300 hover:scale-105 ${statusConfig[task.status].className}`}>
+
+        <div
+          className={`w-fit rounded-full px-4 py-1 text-[13px] font-semibold transition-all duration-300 hover:scale-105 sm:text-[15px] ${statusConfig[task.status].className}`}
+        >
           {statusConfig[task.status].label}
         </div>
       </div>
-      {/* Affichage des informations supplémentaires*/}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
-        <div className="flex flex-wrap items-center gap-3 text-[#8c93a1] text-[13px] sm:text-[14px]">
+
+      {/* Affichage des informations supplémentaires */}
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+
+        <div className="flex flex-wrap items-center gap-3 text-[13px] text-[#5f6673] sm:text-[14px]">
+
           <div className="flex items-center gap-2">
-            <FolderClosed size={16} />
+            <FolderClosed
+              size={16}
+              aria-hidden="true"
+              className="text-[#4b5563]"
+            />
+
             <span>{task.project?.name}</span>
           </div>
-          <div className="hidden sm:block">|</div>
-          <div className="flex items-center gap-2">
-            <Calendar size={16} />
-            <span>{task.dueDate ? new Date(task.dueDate).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) : "Pas de date"}</span>
+
+          <div className="hidden sm:block text-[#4b5563]">
+            |
           </div>
-          <div className="hidden sm:block">|</div>
+
           <div className="flex items-center gap-2">
-            <MessageSquareText size={16} />
+            <Calendar
+              size={16}
+              aria-hidden="true"
+              className="text-[#4b5563]"
+            />
+
+            <span>
+              {task.dueDate
+                ? new Date(task.dueDate).toLocaleDateString("fr-FR", {
+                  day: "numeric",
+                  month: "short",
+                })
+                : "Pas de date"}
+            </span>
+          </div>
+
+          <div className="hidden sm:block text-[#4b5563]">
+            |
+          </div>
+
+          <div className="flex items-center gap-2">
+            <MessageSquareText
+              size={16}
+              aria-hidden="true"
+              className="text-[#4b5563]"
+            />
+
             <span>{task.comments?.length || 0}</span>
           </div>
         </div>
-        <button onClick={() => router.push(`/projects/${task.project?.id}`)} 
-        className="w-full lg:w-[140px] h-[48px] bg-[#1f1f23] text-white rounded-[12px] text-[16px] sm:text-[18px] transition-all duration-300 hover:bg-black hover:shadow-lg hover:scale-[1.02] active:scale-[0.97]">
+
+        <button
+          type="button"
+          aria-label={`Voir le projet ${task.project?.name}`}
+          onClick={() => router.push(`/projects/${task.project?.id}`)}
+          className="h-[48px] w-full rounded-[12px] bg-[#1f1f23] text-[16px] font-medium text-white transition-all duration-300 hover:scale-[1.02] hover:bg-black hover:shadow-lg active:scale-[0.97] lg:w-[140px] sm:text-[18px]"
+        >
           Voir
         </button>
       </div>

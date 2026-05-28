@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import api from "@/services/api";
@@ -9,32 +9,31 @@ import logoAbricot from "@/assets/logoabricot.png";
 
 // Page d'inscription
 export default function RegisterPage() {
-
   // Initialisation des états pour les champs du formulaire, les erreurs et le chargement
   const router = useRouter();
-
-  //formulaires
+  // formulaire
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  //ereurs
+  // erreurs
   const [error, setError] = useState("");
-
-  //chargement
+  // chargement
   const [loading, setLoading] = useState(false);
+  // Titre de page SEO + accessibilité
+  useEffect(() => {
+    document.title = "Inscription | Abricot";
+  }, []);
 
   // Gère l'inscription de l'utilisateur
-  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-
+  const handleRegister = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
-
     setError("");
     setLoading(true);
 
     // Envoie une requête POST à l'API pour enregistrer l'utilisateur
     try {
-
       await api.post("/auth/register", {
         name,
         email,
@@ -42,65 +41,79 @@ export default function RegisterPage() {
       });
 
       router.push("/login");
-
-      // Affiche une notification de succès (à implémenter)
-
     } catch (error: any) {
-
       console.log("Erreur complète :", error);
-
       console.log(
         "Data JSON :",
-        JSON.stringify(error.response?.data, null, 2)
+        JSON.stringify(
+          error.response?.data,
+          null,
+          2
+        )
       );
-
       console.log(
         "Details :",
-        JSON.stringify(error.response?.data?.details, null, 2)
+        JSON.stringify(
+          error.response?.data?.details,
+          null,
+          2
+        )
       );
-
-      console.log("Status :", error.response?.status);
-
-      console.log("Headers :", error.response?.headers);
-
-
+      console.log(
+        "Status :",
+        error.response?.status
+      );
+      console.log(
+        "Headers :",
+        error.response?.headers
+      );
+      setError(
+        error?.response?.data?.message ||
+          "Erreur lors de l'inscription"
+      );
     } finally {
-
       setLoading(false);
-
     }
   };
 
   return (
-
-    <div className="min-h-screen flex bg-[#f3f3f3] overflow-hidden">
-
+    <main
+      role="main"
+      aria-label="Page d'inscription"
+      className="flex min-h-screen overflow-hidden bg-[#f3f3f3]"
+    >
       {/* Partie gauche - Formulaire */}
-      <div className="w-full lg:w-[39%] bg-[#f3f3f3] relative flex items-center justify-center px-8">
-
+      <section
+        aria-labelledby="register-title"
+        className="relative flex w-full items-center justify-center bg-[#f3f3f3] px-8 lg:w-[39%]"
+      >
         {/* Logo */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2">
+        <div className="absolute left-1/2 top-20 -translate-x-1/2">
           <Image
             src={logoAbricot}
             alt="Logo Abricot"
-            className="w-[320px] h-auto"
+            className="h-auto w-[320px]"
             priority
           />
         </div>
 
         <div className="w-full max-w-[360px]">
-
-          <h1 className="text-[58px] font-bold text-[#d45d00] mb-14 leading-none text-center">
+          <h1
+            id="register-title"
+            className="mb-14 text-center text-[58px] font-bold leading-none text-[#d45d00]"
+          >
             Inscription
           </h1>
 
-          <form onSubmit={handleRegister} className="space-y-6">
-
+          <form
+            onSubmit={handleRegister}
+            className="space-y-6"
+          >
+            {/* Nom */}
             <div>
-
               <label
                 htmlFor="name"
-                className="block text-[18px] text-[#1d1d1d] mb-3"
+                className="mb-3 block text-[18px] text-[#1d1d1d]"
               >
                 Nom
               </label>
@@ -112,17 +125,18 @@ export default function RegisterPage() {
                 autoComplete="name"
                 required
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2 focus:border-[#d45d00]"
+                onChange={(e) =>
+                  setName(e.target.value)
+                }
+                className="h-[54px] w-full rounded-[4px] border border-[#d8d8d8] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:border-[#d45d00] focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
               />
-
             </div>
 
+            {/* Email */}
             <div>
-
               <label
                 htmlFor="email"
-                className="block text-[18px] text-[#1d1d1d] mb-3"
+                className="mb-3 block text-[18px] text-[#1d1d1d]"
               >
                 Email
               </label>
@@ -134,17 +148,18 @@ export default function RegisterPage() {
                 autoComplete="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2 focus:border-[#d45d00]"
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
+                className="h-[54px] w-full rounded-[4px] border border-[#d8d8d8] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:border-[#d45d00] focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
               />
-
             </div>
 
+            {/* Mot de passe */}
             <div>
-
               <label
                 htmlFor="password"
-                className="block text-[18px] text-[#1d1d1d] mb-3"
+                className="mb-3 block text-[18px] text-[#1d1d1d]"
               >
                 Mot de passe
               </label>
@@ -156,67 +171,73 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-[54px] border border-[#d8d8d8] rounded-[4px] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2 focus:border-[#d45d00]"
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+                className="h-[54px] w-full rounded-[4px] border border-[#d8d8d8] bg-white px-4 text-[16px] text-[#1d1d1d] transition-all duration-200 focus:border-[#d45d00] focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
               />
-
             </div>
 
+            {/* Erreur */}
             {error && (
-
               <p
                 role="alert"
                 aria-live="assertive"
-                className="text-red-600 text-[15px]"
+                className="text-[15px] text-red-600"
               >
                 {error}
               </p>
-
             )}
 
+            {/* Bouton inscription */}
             <button
               type="submit"
               disabled={loading}
               aria-busy={loading}
-              className="w-full h-[58px] bg-[#1f1f23] hover:bg-black disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 rounded-[12px] text-white text-[24px] focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
+              className="h-[58px] w-full rounded-[12px] bg-[#1f1f23] text-[24px] text-white transition-all duration-200 hover:bg-black disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
             >
-              {loading ? "Inscription..." : "S'inscrire"}
+              {loading
+                ? "Inscription..."
+                : "S'inscrire"}
             </button>
-
           </form>
 
-          <div className="flex items-center justify-center gap-2 text-[20px] mt-20 whitespace-nowrap">
+          {/* Navigation */}
+          <nav
+            aria-label="Navigation authentification"
+            className="mt-20"
+          >
+            <div className="flex items-center justify-center gap-2 whitespace-nowrap text-[20px]">
+              <span className="text-[#1d1d1d]">
+                Déjà inscrit ?
+              </span>
 
-            <span className="text-[#1d1d1d]">
-              Déjà inscrit ?
-            </span>
-
-            <button
-              type="button"
-              onClick={() => router.push("/login")}
-              className="text-[#c45100] underline font-semibold focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2 rounded-[4px]"
-            >
-              Se connecter
-            </button>
-
-          </div>
-
+              <button
+                type="button"
+                onClick={() =>
+                  router.push("/login")
+                }
+                className="rounded-[4px] font-semibold text-[#7a2f00] underline transition-all hover:text-[#5f2400] focus:outline-none focus:ring-2 focus:ring-[#d45d00] focus:ring-offset-2"
+              >
+                Se connecter
+              </button>
+            </div>
+          </nav>
         </div>
+      </section>
 
-      </div>
-
-      {/* Partie droite - Illustration (masquée sur mobile) */}
-      <div className="hidden lg:block lg:w-[61%] h-screen">
-
+      {/* Partie droite - Illustration */}
+      <aside
+        aria-label="Illustration"
+        className="hidden h-screen lg:block lg:w-[61%]"
+      >
         <Image
           src={bannerRegister}
           alt="Illustration de la page d'inscription"
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
           priority
         />
-
-      </div>
-
-    </div>
+      </aside>
+    </main>
   );
 }

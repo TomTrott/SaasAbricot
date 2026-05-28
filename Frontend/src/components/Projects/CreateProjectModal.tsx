@@ -38,6 +38,7 @@ export default function CreateProjectModal({
     const fetchUsers = async () => {
       try {
         const res = await api.get("/users");
+
         // sendSuccess => data.users
         setUsers(res.data.data.users);
       } catch (err) {
@@ -62,10 +63,12 @@ export default function CreateProjectModal({
         setDropdownOpen(false);
       }
     };
+
     document.addEventListener(
       "mousedown",
       handleClickOutside
     );
+
     return () => {
       document.removeEventListener(
         "mousedown",
@@ -130,7 +133,7 @@ export default function CreateProjectModal({
 
       setError(
         err?.response?.data?.message ||
-        "Erreur lors de la création du projet"
+          "Erreur lors de la création du projet"
       );
     } finally {
       setLoading(false);
@@ -139,44 +142,57 @@ export default function CreateProjectModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4">
-      <div className="w-full max-w-[520px] rounded-[10px] bg-white p-8 relative shadow-2xl">
+      <div className="relative w-full max-w-[520px] rounded-[14px] bg-white p-8 shadow-2xl">
+        
         {/* bouton fermer */}
         <button
+          type="button"
+          aria-label="Fermer la fenêtre"
           onClick={onClose}
-          className="absolute right-6 top-6 text-gray-400 hover:text-black text-2xl"
+          className="absolute right-6 top-6 text-[28px] text-[#6b7280] transition hover:text-black"
         >
           ×
         </button>
 
         {/* titre */}
-        <h2 className="text-[26px] text-[#1f1f1f] mb-10">
+        <h2 className="mb-10 text-[26px] font-semibold text-[#1f1f1f]">
           Créer un projet
         </h2>
 
         <div className="space-y-6">
+          
           {/* titre projet */}
           <div>
-            <label className="block text-sm mb-2 text-[#1f1f1f]">
+            <label
+              htmlFor="project-title"
+              className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+            >
               Titre*
             </label>
 
             <input
+              id="project-title"
               type="text"
               value={title}
               onChange={(e) =>
                 setTitle(e.target.value)
               }
-              className="w-full h-[54px] border border-gray-200 rounded-[4px] px-4 outline-none focus:border-black"
+              className="h-[54px] w-full rounded-[8px] border border-[#d1d5db] px-4 text-[15px] text-[#1f1f1f] outline-none transition-all placeholder:text-[#6b7280] focus:border-[#1f1f1f]"
+              placeholder="Nom du projet"
             />
           </div>
 
           {/* description */}
           <div>
-            <label className="block text-sm mb-2 text-[#1f1f1f]">
+            <label
+              htmlFor="project-description"
+              className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+            >
               Description*
             </label>
 
             <textarea
+              id="project-description"
               value={description}
               onChange={(e) =>
                 setDescription(
@@ -184,7 +200,8 @@ export default function CreateProjectModal({
                 )
               }
               rows={4}
-              className="w-full border border-gray-200 rounded-[4px] px-4 py-3 outline-none focus:border-black"
+              placeholder="Décrivez le projet"
+              className="w-full rounded-[8px] border border-[#d1d5db] px-4 py-3 text-[15px] text-[#1f1f1f] outline-none transition-all placeholder:text-[#6b7280] focus:border-[#1f1f1f]"
             />
           </div>
 
@@ -193,37 +210,45 @@ export default function CreateProjectModal({
             ref={dropdownRef}
             className="relative"
           >
-            <label className="block text-sm mb-2 text-[#1f1f1f]">
+            <label
+              htmlFor="contributors-dropdown"
+              className="mb-2 block text-[15px] font-medium text-[#1f1f1f]"
+            >
               Contributeurs
             </label>
 
             {/* bouton dropdown */}
             <button
+              id="contributors-dropdown"
               type="button"
+              aria-label="Choisir des contributeurs"
+              aria-expanded={dropdownOpen}
               onClick={() =>
                 setDropdownOpen(
                   !dropdownOpen
                 )
               }
-              className="w-full min-h-[54px] border border-gray-200 rounded-[4px] px-4 py-3 flex items-center justify-between"
+              className="flex min-h-[54px] w-full items-center justify-between rounded-[8px] border border-[#d1d5db] px-4 py-3 text-left transition-all hover:border-[#9ca3af]"
             >
-              <span className="truncate text-sm text-left">
+              <span className="truncate text-[14px] text-[#374151]">
                 {selectedUsers.length > 0
                   ? selectedUsers
-                    .map((u) => u.name)
-                    .join(", ")
+                      .map((u) => u.name)
+                      .join(", ")
                   : "Choisir un ou plusieurs collaborateurs"}
               </span>
 
               {/* flèche */}
               <svg
-                className={`w-5 h-5 transition-transform flex-shrink-0 ${dropdownOpen
+                className={`h-5 w-5 flex-shrink-0 text-[#4b5563] transition-transform ${
+                  dropdownOpen
                     ? "rotate-180"
                     : ""
-                  }`}
+                }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -236,9 +261,10 @@ export default function CreateProjectModal({
 
             {/* menu dropdown */}
             {dropdownOpen && (
-              <div className="absolute z-50 mt-2 w-full rounded-[8px] border border-gray-200 bg-white shadow-lg max-h-60 overflow-y-auto">
+              <div className="absolute z-50 mt-2 max-h-60 w-full overflow-y-auto rounded-[10px] border border-[#d1d5db] bg-white shadow-lg">
+                
                 {users.length === 0 ? (
-                  <div className="px-4 py-3 text-sm text-gray-400">
+                  <div className="px-4 py-3 text-[14px] text-[#6b7280]">
                     Aucun utilisateur
                   </div>
                 ) : (
@@ -252,25 +278,25 @@ export default function CreateProjectModal({
                     return (
                       <label
                         key={user.id}
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer"
+                        htmlFor={`user-${user.id}`}
+                        className="flex cursor-pointer items-center gap-3 px-4 py-3 transition hover:bg-[#f9fafb]"
                       >
                         <input
+                          id={`user-${user.id}`}
                           type="checkbox"
                           checked={checked}
                           onChange={() =>
-                            toggleUser(
-                              user
-                            )
+                            toggleUser(user)
                           }
-                          className="w-4 h-4"
+                          className="h-4 w-4 accent-[#1f1f1f]"
                         />
 
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium">
+                          <span className="text-[14px] font-medium text-[#1f1f1f]">
                             {user.name}
                           </span>
 
-                          <span className="text-xs text-gray-400">
+                          <span className="text-[13px] text-[#5f6673]">
                             {user.email}
                           </span>
                         </div>
@@ -284,20 +310,21 @@ export default function CreateProjectModal({
 
           {/* erreur */}
           {error && (
-            <div className="text-red-500 text-sm">
+            <div className="text-[14px] font-medium text-red-600">
               {error}
             </div>
           )}
 
           {/* bouton */}
           <button
+            type="button"
             onClick={handleSubmit}
             disabled={
               loading ||
               !title ||
               !description
             }
-            className="mt-4 h-[54px] px-7 rounded-[14px] bg-[#1f1f23] text-white text-[17px] transition-all duration-300 hover:bg-black disabled:opacity-50"
+            className="mt-4 h-[54px] rounded-[14px] bg-[#1f1f23] px-7 text-[17px] font-medium text-white transition-all duration-300 hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading
               ? "Création..."
